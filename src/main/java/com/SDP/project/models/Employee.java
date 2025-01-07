@@ -14,10 +14,6 @@ public class Employee {
     @Id
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "account_id")
-    private Account account;
-
     private String first_name;
     private String last_name;
     private String address;

@@ -1,7 +1,6 @@
 package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.SchoolDto;
-import com.SDP.project.models.School;
 import com.SDP.project.services.SchoolService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

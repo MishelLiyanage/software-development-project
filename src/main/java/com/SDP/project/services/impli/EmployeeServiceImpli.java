@@ -1,12 +1,10 @@
 package com.SDP.project.services.impli;
 
 import com.SDP.project.DTOs.EmployeeDto;
-import com.SDP.project.DTOs.SchoolDto;
 import com.SDP.project.Repository.AccountRepository;
 import com.SDP.project.Repository.EmployeeRepository;
 import com.SDP.project.models.Account;
 import com.SDP.project.models.Employee;
-import com.SDP.project.models.School;
 import com.SDP.project.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
