@@ -21,6 +21,10 @@ public class Employee {
     private String status;
     private String profile_pic;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "account_id", referencedColumnName = "id")
+    private Account account;
+
     public Employee(String firstName, String lastName, String address, String contactNo, String status, String profilePic) {
         this.first_name = firstName;
         this.last_name = lastName;

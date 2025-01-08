@@ -17,17 +17,20 @@ public class SchoolServiceImpli implements SchoolService {
     @Autowired
     private AccountRepository accountRepository;
 
+
     public String saveSchool(SchoolDto schoolDto) {
         System.out.println("in save school method");
 
         String username = schoolDto.getUsername();
         String password = schoolDto.getPassword();
         String role = schoolDto.getRole();
+        System.out.println("Username: " + username);
+        System.out.println("Password: " + password);
+        System.out.println("Role: " + role);
+
         Account account = new Account(username, password, role);
 
         Account savedAccount = accountRepository.save(account);
-
-        int accountId = savedAccount.getId();
 
         String name = schoolDto.getName();
         String address = schoolDto.getAddress();
@@ -36,10 +39,14 @@ public class SchoolServiceImpli implements SchoolService {
         String principle_name = schoolDto.getPrinciple_name();
         String principle_signature = schoolDto.getPrinciple_signature();
         School school = new School(name, address, contact_no, email, principle_name, principle_signature);
-        school.setId(accountId);
+
+        // Set the Account object instead of account ID
+        school.setAccount(savedAccount);
+        school.setId(savedAccount.getId());
 
         schoolRepository.save(school);
 
-        return ("Registered a school Successfully");
+        return "Registered a school Successfully";
     }
+
 }

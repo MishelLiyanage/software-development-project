@@ -8,6 +8,7 @@ import com.SDP.project.models.Employee;
 import com.SDP.project.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class EmployeeServiceImpli implements EmployeeService {
@@ -18,6 +19,7 @@ public class EmployeeServiceImpli implements EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    @Transactional
     public String saveEmployee(EmployeeDto employeeDto) {
         System.out.println("in save employee method");
 

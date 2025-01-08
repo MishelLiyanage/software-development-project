@@ -1,10 +1,13 @@
 package com.SDP.project.DTOs;
 
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
 public class SchoolDto {
     private String username;
+
+    @NotBlank(message = "Password cannot be blank")
     private String password;
     private String role;
     private String name;
