@@ -39,6 +39,7 @@ public class EmployeeServiceImpli implements EmployeeService {
         String status = employeeDto.getStatus();
         String profile_pic = employeeDto.getProfile_pic();
         Employee employee = new Employee(first_name, last_name, address, contact_no, status, profile_pic);
+        employee.setAccount(savedAccount);
         employee.setId(accountId);
 
         employeeRepository.save(employee);
