@@ -9,6 +9,7 @@ import com.SDP.project.services.SchoolService;
 import com.SDP.project.shared.exceptions.RecordAlreadyExistException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Slf4j
@@ -19,6 +20,8 @@ public class SchoolServiceImpli implements SchoolService {
     SchoolRepository schoolRepository;
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     public String saveSchool(SchoolDto schoolDto) {
@@ -28,7 +31,7 @@ public class SchoolServiceImpli implements SchoolService {
             validateSchool(schoolDto);
 
             String username = schoolDto.getUsername();
-            String password = schoolDto.getPassword();
+            String password = passwordEncoder.encode(schoolDto.getPassword());
             String role = "School";
 
             Account account = new Account(username, password, role);

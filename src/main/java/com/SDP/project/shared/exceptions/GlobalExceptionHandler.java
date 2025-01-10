@@ -18,19 +18,19 @@ import java.util.List;
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(RecordAlreadyExistException.class)
-    public ResponseEntity<Object> handleRecordAlreadyExistException(RecordAlreadyExistException exception) {
+    @ExceptionHandler({RecordAlreadyExistException.class, GeneralException.class})
+    public ResponseEntity<Object> handleRecordAlreadyExistException(GeneralException exception) {
         return ResponseEntity
-                .status(HttpStatus.FORBIDDEN)
+                .status(exception.getCode())
                 .body(exception.getMessage());
     }
 
-    @ExceptionHandler(GeneralException.class)
-    public ResponseEntity<Object> handleGeneralException(GeneralException exception) {
-        return ResponseEntity
-                .status(HttpStatus.valueOf(exception.getCode()))
-                .body(exception.getMessage());
-    }
+//    @ExceptionHandler(GeneralException.class)
+//    public ResponseEntity<Object> handleGeneralException(GeneralException exception) {
+//        return ResponseEntity
+//                .status(HttpStatus.valueOf(exception.getCode()))
+//                .body(exception.getMessage());
+//    }
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Object> handleRuntimeException(RuntimeException exception) {

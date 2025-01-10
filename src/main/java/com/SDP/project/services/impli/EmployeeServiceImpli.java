@@ -7,10 +7,11 @@ import com.SDP.project.models.Account;
 import com.SDP.project.models.Employee;
 import com.SDP.project.services.EmployeeService;
 import com.SDP.project.shared.exceptions.RecordAlreadyExistException;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Service
@@ -22,6 +23,9 @@ public class EmployeeServiceImpli implements EmployeeService {
     @Autowired
     EmployeeRepository employeeRepository;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder; // Inject PasswordEncoder
+
     @Transactional
     public String saveEmployee(EmployeeDto employeeDto) {
         try {
@@ -31,7 +35,7 @@ public class EmployeeServiceImpli implements EmployeeService {
 
             // Create and save account
             String username = employeeDto.getUsername();
-            String password = employeeDto.getPassword();
+            String password = passwordEncoder.encode(employeeDto.getPassword()); // Encode the password
             String role = "Employee";
             Account account = new Account(username, password, role);
 
