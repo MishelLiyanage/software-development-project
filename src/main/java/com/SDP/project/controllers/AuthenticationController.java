@@ -19,12 +19,10 @@ public class AuthenticationController {
     private final JwtService jwtService;
 
     private final AuthService authService;
-    private final AccountRepository accountRepository;
 
     public AuthenticationController(JwtService jwtService, AuthService authService, AccountRepository accountRepository) {
         this.jwtService = jwtService;
         this.authService = authService;
-        this.accountRepository = accountRepository;
     }
 
     @PostMapping("/login")
