@@ -1,5 +1,6 @@
 package com.SDP.project.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -25,15 +26,18 @@ public class SchoolDto {
 
     @NotBlank(message = "Contact number is required")
     @Pattern(regexp = "\\d{10}", message = "Contact number must be 10 digits")
-    private String contact_no;
+    @JsonProperty("contact_no")
+    private String contactNo;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
     private String email;
 
     @NotBlank(message = "Principal name is required")
-    private String principle_name;
+    @JsonProperty("principle_name")
+    private String principleName;
 
     @NotBlank(message = "Principle's signature is required")
-    private String principle_signature;
+    @JsonProperty("principle_signature")
+    private String principleSignature;
 }

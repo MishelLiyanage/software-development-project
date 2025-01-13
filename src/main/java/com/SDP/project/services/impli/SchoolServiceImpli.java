@@ -40,10 +40,10 @@ public class SchoolServiceImpli implements SchoolService {
 
             String name = schoolDto.getName();
             String address = schoolDto.getAddress();
-            String contact_no = schoolDto.getContact_no();
+            String contact_no = schoolDto.getContactNo();
             String email = schoolDto.getEmail();
-            String principle_name = schoolDto.getPrinciple_name();
-            String principle_signature = schoolDto.getPrinciple_signature();
+            String principle_name = schoolDto.getPrincipleName();
+            String principle_signature = schoolDto.getPrincipleSignature();
             School school = new School(name, address, contact_no, email, principle_name, principle_signature);
 
             // Set the Account object instead of account ID

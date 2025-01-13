@@ -15,11 +15,19 @@ public class School {
     private int id;
 
     private String name;
+
     private String address;
-    private String contact_no;
+
+    @Column(name = "contact_no")
+    private String contactNo;
+
     private String email;
-    private String principle_name;
-    private String principle_signature;
+
+    @Column(name = "principle_name")
+    private String principleName;
+
+    @Column(name = "principle_signature")
+    private String principleSignature;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
@@ -29,9 +37,9 @@ public class School {
     public School(String name, String address, String contactNo, String email, String principleName, String principleSignature) {
         this.name = name;
         this.address = address;
-        this.contact_no = contactNo;
+        this.contactNo = contactNo;
         this.email = email;
-        this.principle_name = principleName;
-        this.principle_signature = principleSignature;
+        this.principleName = principleName;
+        this.principleSignature = principleSignature;
     }
 }
