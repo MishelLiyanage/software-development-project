@@ -9,22 +9,22 @@ public class EmployeeResponseDto {
     private int id;
     private String username;
     private String role;
-    private String first_name;
-    private String last_name;
+    private String firstName;
+    private String lastName;
     private String address;
-    private String contact_no;
+    private String contactNo;
     private String status;
-    private String profile_pic;
+    private String profilePic;
 
     public EmployeeResponseDto(int id, String username, String role, String firstName, String lastName, String address, String contactNo, String status, String profilePic) {
         this.id = id;
         this.username = username;
         this.role = role;
-        this.first_name = firstName;
-        this.last_name = lastName;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.address = address;
-        this.contact_no = contactNo;
+        this.contactNo = contactNo;
         this.status = status;
-        this.profile_pic = profilePic;
+        this.profilePic = profilePic;
     }
 }

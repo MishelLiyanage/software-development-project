@@ -11,10 +11,10 @@ public class SchoolResponseDto {
     private String role;
     private String name;
     private String address;
-    private String contact_no;
+    private String contactNo;
     private String email;
-    private String principle_name;
-    private String principle_signature;
+    private String principleName;
+    private String principleSignature;
 
     public SchoolResponseDto(int id, String username, String role, String name, String address, String contactNo, String email, String principleName, String principleSignature) {
         this.id = id;
@@ -22,9 +22,9 @@ public class SchoolResponseDto {
         this.role = role;
         this.name = name;
         this.address = address;
-        this.contact_no = contactNo;
+        this.contactNo = contactNo;
         this.email = email;
-        this.principle_name = principleName;
-        this.principle_signature = principleSignature;
+        this.principleName = principleName;
+        this.principleSignature = principleSignature;
     }
 }

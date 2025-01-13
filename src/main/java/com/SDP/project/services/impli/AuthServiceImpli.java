@@ -96,10 +96,10 @@ public class AuthServiceImpli implements AuthService {
                     account.getRole(),
                     sch.getName(),
                     sch.getAddress(),
-                    sch.getContact_no(),
+                    sch.getContactNo(),
                     sch.getEmail(),
-                    sch.getPrinciple_name(),
-                    sch.getPrinciple_signature()
+                    sch.getPrincipleName(),
+                    sch.getPrincipleSignature()
             ));
         }
 
