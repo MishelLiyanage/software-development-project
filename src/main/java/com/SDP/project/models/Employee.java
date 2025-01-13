@@ -14,23 +14,32 @@ public class Employee {
     @Id
     private int id;
 
-    private String first_name;
-    private String last_name;
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
     private String address;
-    private String contact_no;
+
+    @Column(name = "contact_no")
+    private String contactNo;
+
     private String status;
-    private String profile_pic;
+
+    @Column(name = "profile_pic")
+    private String profilePic;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
     public Employee(String firstName, String lastName, String address, String contactNo, String status, String profilePic) {
-        this.first_name = firstName;
-        this.last_name = lastName;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.address = address;
-        this.contact_no = contactNo;
+        this.contactNo = contactNo;
         this.status = status;
-        this.profile_pic = profilePic;
+        this.profilePic = profilePic;
     }
 }

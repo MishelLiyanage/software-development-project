@@ -1,5 +1,6 @@
-package com.SDP.project.services;
+package com.SDP.project.shared.security;
 
+import com.SDP.project.models.Account;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -13,10 +14,12 @@ import java.util.function.Function;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 @Service
 public class JwtService {
+
     @Value("${security.jwt.secret-key}")
     private String secretKey;
 
@@ -33,12 +36,13 @@ public class JwtService {
     }
 
 //    genetate the token
-    public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+    public String generateToken(Account account) {
+
+        return generateToken(new HashMap<>(), account);
     }
 
-    public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
-        return buildToken(extraClaims, userDetails, jwtExpiration);
+    public String generateToken(Map<String, Object> extraClaims, Account account) {
+        return buildToken(extraClaims, account, jwtExpiration);
     }
 
 //    get the expiration time
@@ -49,13 +53,19 @@ public class JwtService {
 //    build the token
     private String buildToken(
             Map<String, Object> extraClaims,
-            UserDetails userDetails,
+            Account account,
             long expiration
     ) {
+
+        String role = account.getRole();
+        extraClaims.put("role", role);
+
+
+
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
-                .setSubject(userDetails.getUsername())
+                .setSubject(account.getUsername())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
                 .setExpiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)

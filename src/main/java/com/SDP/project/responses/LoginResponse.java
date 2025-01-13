@@ -1,32 +1,23 @@
 package com.SDP.project.responses;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.Getter;
+
+@Getter
+@Builder
 public class LoginResponse {
-    private String token;
 
+    @JsonProperty("access_token")
+    private String accessToken;
+
+    @JsonProperty("expires_in")
     private long expiresIn;
-
-    public String getToken() {
-        return token;
-    }
-
-    public LoginResponse setToken(String token) {
-        this.token = token;
-        return this;
-    }
-
-    public long getExpiresIn() {
-        return expiresIn;
-    }
-
-    public LoginResponse setExpiresIn(long expiresIn) {
-        this.expiresIn = expiresIn;
-        return this;
-    }
 
     @Override
     public String toString() {
         return "LoginResponse{" +
-                "token='" + token + '\'' +
+                "token='" + accessToken + '\'' +
                 ", expiresIn=" + expiresIn +
                 '}';
     }

@@ -43,13 +43,13 @@ public class EmployeeServiceImpli implements EmployeeService {
             int accountId = savedAccount.getId();
 
             // Create and save employee
-            String first_name = employeeDto.getFirst_name();
-            String last_name = employeeDto.getLast_name();
+            String firstName = employeeDto.getFirstName();
+            String lastName = employeeDto.getLastName();
             String address = employeeDto.getAddress();
-            String contact_no = employeeDto.getContact_no();
+            String contactNo = employeeDto.getContactNo();
             String status = "active";
-            String profile_pic = employeeDto.getProfile_pic();
-            Employee employee = new Employee(first_name, last_name, address, contact_no, status, profile_pic);
+            String profilePic = employeeDto.getProfilePic();
+            Employee employee = new Employee(firstName, lastName, address, contactNo, status, profilePic);
             employee.setAccount(savedAccount);
             employee.setId(accountId);
 

@@ -1,5 +1,7 @@
 package com.SDP.project.DTOs;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -15,18 +17,22 @@ public class EmployeeDto {
     @Size(min = 8, message = "Password must be at least 8 characters long")
     private String password;
 
+    @JsonProperty("first_name")
     @NotBlank(message = "First name is required")
-    private String first_name;
+    private String firstName;
 
+    @JsonProperty("last_name")
     @NotBlank(message = "Last name is required")
-    private String last_name;
+    private String lastName;
 
     @NotBlank(message = "Address is required")
     private String address;
 
+    @JsonProperty("contact_no")
     @NotBlank(message = "Contact number is required")
     @Pattern(regexp = "\\d{10}", message = "Contact number must be 10 digits")
-    private String contact_no;
+    private String contactNo;
 
-    private String profile_pic;
+    @JsonProperty("profile_pic")
+    private String profilePic;
 }

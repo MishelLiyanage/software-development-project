@@ -2,18 +2,18 @@ package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.LoginUserDto;
 import com.SDP.project.Repository.AccountRepository;
+import com.SDP.project.models.Account;
 import com.SDP.project.responses.LoginResponse;
 import com.SDP.project.services.AuthService;
-import com.SDP.project.services.JwtService;
+import com.SDP.project.shared.exceptions.NotFoundException;
+import com.SDP.project.shared.security.JwtService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RequestMapping("/auth")
+import java.util.Optional;
+
+@RequestMapping("/account")
 @RestController
 public class AuthenticationController {
     private final JwtService jwtService;
@@ -27,13 +27,26 @@ public class AuthenticationController {
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> authenticate(@Valid @RequestBody LoginUserDto loginUserDto) {
-        System.out.println(loginUserDto.getUsername());
-        UserDetails authenticatedUser = authService.authenticate(loginUserDto);
+        Account authenticatedUser = authService.authenticate(loginUserDto);
 
         String jwtToken = jwtService.generateToken(authenticatedUser);
 
-        LoginResponse loginResponse = new LoginResponse().setToken(jwtToken).setExpiresIn(jwtService.getExpirationTime());
+        LoginResponse loginResponse = LoginResponse.builder()
+                .accessToken(jwtToken)
+                .expiresIn(jwtService.getExpirationTime())
+                .build();
 
         return ResponseEntity.ok(loginResponse);
+    }
+
+    @GetMapping("/currentuser")
+    public ResponseEntity<?> authenticatedUser() {
+        Optional<?> currentUser = authService.getCurrentUser();
+
+        if (currentUser.isPresent()) {
+            return ResponseEntity.ok(currentUser.get());
+        } else {
+            throw new NotFoundException("No authenticated user found or invalid role.");
+        }
     }
 }
