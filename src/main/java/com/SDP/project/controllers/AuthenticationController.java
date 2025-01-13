@@ -20,7 +20,7 @@ public class AuthenticationController {
 
     private final AuthService authService;
 
-    public AuthenticationController(JwtService jwtService, AuthService authService, AccountRepository accountRepository) {
+    public AuthenticationController(JwtService jwtService, AuthService authService) {
         this.jwtService = jwtService;
         this.authService = authService;
     }
