@@ -16,7 +16,7 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import java.util.List;
 
 @Configuration
-@EnableMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity()
 public class SecurityConfiguration {
     // AuthenticationProvider handles the actual authentication logic
     private final AuthenticationProvider authenticationProvider;
