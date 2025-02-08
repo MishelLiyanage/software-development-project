@@ -6,6 +6,7 @@ import com.SDP.project.Repository.SchoolRepository;
 import com.SDP.project.models.Account;
 import com.SDP.project.models.School;
 import com.SDP.project.services.SchoolService;
+import com.SDP.project.shared.ApplicationConstants;
 import com.SDP.project.shared.exceptions.RecordAlreadyExistException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class SchoolServiceImpli implements SchoolService {
 
             String username = schoolDto.getUsername();
             String password = passwordEncoder.encode(schoolDto.getPassword());
-            String role = "School";
+            String role = ApplicationConstants.ROLES.ROLE_SCHOOL.name();
 
             Account account = new Account(username, password, role);
 

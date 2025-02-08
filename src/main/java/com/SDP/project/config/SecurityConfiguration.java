@@ -4,6 +4,7 @@ import com.SDP.project.shared.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
@@ -14,8 +15,8 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-//Configuration class for Spring Security setup.
 @Configuration
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
     // AuthenticationProvider handles the actual authentication logic
     private final AuthenticationProvider authenticationProvider;

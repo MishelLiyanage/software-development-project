@@ -6,6 +6,7 @@ import com.SDP.project.Repository.EmployeeRepository;
 import com.SDP.project.models.Account;
 import com.SDP.project.models.Employee;
 import com.SDP.project.services.EmployeeService;
+import com.SDP.project.shared.ApplicationConstants;
 import com.SDP.project.shared.exceptions.RecordAlreadyExistException;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -36,7 +37,7 @@ public class EmployeeServiceImpli implements EmployeeService {
             // Create and save account
             String username = employeeDto.getUsername();
             String password = passwordEncoder.encode(employeeDto.getPassword()); // Encode the password
-            String role = "Employee";
+            String role = ApplicationConstants.ROLES.ROLE_EMPLOYEE.name();
             Account account = new Account(username, password, role);
 
             Account savedAccount = accountRepository.save(account);
