@@ -3,12 +3,14 @@ package com.SDP.project.models;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Data
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
 public class ModelPaper {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

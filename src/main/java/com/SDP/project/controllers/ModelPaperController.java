@@ -1,10 +1,8 @@
 package com.SDP.project.controllers;
 
-import com.SDP.project.DTOs.EmployeeDto;
 import com.SDP.project.DTOs.ModelPaperDto;
 import com.SDP.project.services.ModelPaperService;
 import jakarta.validation.Valid;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
