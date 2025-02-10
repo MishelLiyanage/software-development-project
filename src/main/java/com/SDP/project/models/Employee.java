@@ -34,6 +34,10 @@ public class Employee {
     @JoinColumn(name = "account_id", referencedColumnName = "id")
     private Account account;
 
+    @ManyToOne
+    @JoinColumn(name = "department_id", referencedColumnName = "id")
+    private Department department;
+
     public Employee(String firstName, String lastName, String address, String contactNo, String status, String profilePic) {
         this.firstName = firstName;
         this.lastName = lastName;

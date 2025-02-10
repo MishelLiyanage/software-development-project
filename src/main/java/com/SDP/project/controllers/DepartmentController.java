@@ -1,7 +1,7 @@
 package com.SDP.project.controllers;
 
-import com.SDP.project.DTOs.ModelPaperDto;
-import com.SDP.project.services.ModelPaperService;
+import com.SDP.project.DTOs.DepartmentDto;
+import com.SDP.project.services.DepartmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,18 +10,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/modelpaper")
+@RequestMapping("/department")
 @RestController
-public class ModelPaperController {
+public class DepartmentController {
     @Autowired
-    ModelPaperService modelPaperService;
+    DepartmentService departmentService;
 
     @PostMapping("/")
-    @PreAuthorize( "hasRole('ROLE_ADMIN')")
-    public String saveModelPaper(@Valid @RequestBody ModelPaperDto modelPaperDto) {
-        return modelPaperService.saveModelPaper(modelPaperDto);
+    @PreAuthorize( "hasAnyRole('ROLE_ADMIN')")
+    public String createDepartment(@Valid @RequestBody DepartmentDto departmentDto) {
+        return departmentService.createDepartment(departmentDto);
     }
-
-//    public String assignModelPaperToEmployee(@Valid @RequestBody ModelPaperDto modelPaperDto) {}
-
 }

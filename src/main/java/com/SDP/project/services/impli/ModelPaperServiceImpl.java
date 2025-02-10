@@ -27,7 +27,7 @@ public class ModelPaperServiceImpl implements ModelPaperService {
 
         modelPaperRepository.save(modelPaper);
 
-        return "Successfully saved ModelPaper";
+        return "Saved ModelPaper successfully.";
     }
 
     private void isModelPaperExist(ModelPaperDto modelPaperDto) {
