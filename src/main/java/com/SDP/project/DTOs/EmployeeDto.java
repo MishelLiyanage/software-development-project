@@ -34,4 +34,7 @@ public class EmployeeDto {
 
     @JsonProperty("profile_pic")
     private String profilePic;
+
+    @JsonProperty("department_name")
+    private String departmentName;
 }
