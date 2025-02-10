@@ -1,7 +1,6 @@
 package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.DepartmentDto;
-import com.SDP.project.Repository.DepartmentRepository;
 import com.SDP.project.services.DepartmentService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
