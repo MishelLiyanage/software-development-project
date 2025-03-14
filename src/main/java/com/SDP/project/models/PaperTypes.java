@@ -5,8 +5,6 @@ import lombok.*;
 
 @Data
 @Entity
-@Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class PaperTypes {
@@ -20,8 +18,7 @@ public class PaperTypes {
     @JoinColumn(name = "department_id", referencedColumnName = "id")
     private Department department;
 
-    public PaperTypes(String paperType, Department department) {
+    public PaperTypes(String paperType) {
         this.paperType = paperType;
-        this.department = department;
     }
 }

@@ -24,7 +24,7 @@ public class SecurityConfiguration {
     // JwtAuthenticationFilter validates JWT tokens in incoming requests
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    //    Constructor to initialize SecurityConfiguration with required dependencies.
+    // Constructor to initialize SecurityConfiguration with required dependencies.
     public SecurityConfiguration(
             JwtAuthenticationFilter jwtAuthenticationFilter,
             AuthenticationProvider authenticationProvider
@@ -33,20 +33,21 @@ public class SecurityConfiguration {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
-    //    Configures the security filter chain for the application.
+    // Configures the security filter chain for the application.
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 // Disable CSRF protection as the application is stateless and uses JWT
                 .csrf(csrf -> csrf.disable())
-                .cors(cors -> cors.disable())
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Enable CORS with custom configuration
 
                 // Configure authorization rules
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/account/login").permitAll()
                         .requestMatchers("/employee/sign-up").permitAll()
                         .requestMatchers("/school/sign-up").permitAll()
-                        .anyRequest().authenticated()      // Secure all other endpoints
+                        .requestMatchers("/school/update-profile").hasRole("SCHOOL")
+                        .anyRequest().authenticated() // Secure all other endpoints
                 )
 
                 // Configure session management as stateless since JWT handles authentication
@@ -64,15 +65,15 @@ public class SecurityConfiguration {
         return http.build();
     }
 
-    //    Configures Cross-Origin Resource Sharing (CORS) settings for the application.
+    // Configures Cross-Origin Resource Sharing (CORS) settings for the application.
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Define allowed origins for cross-origin requests
-        configuration.setAllowedOrigins(List.of("http://localhost:8082"));
+        // Define allowed origins for cross-origin requests (your Angular frontend)
+        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
 
         // Define allowed HTTP methods
-        configuration.setAllowedMethods(List.of("GET", "POST"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 
         // Define allowed headers in requests
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
@@ -89,6 +90,4 @@ public class SecurityConfiguration {
 
         return source;
     }
-
-
 }
