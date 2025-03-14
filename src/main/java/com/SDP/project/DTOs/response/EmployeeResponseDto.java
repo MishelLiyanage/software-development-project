@@ -8,6 +8,7 @@ import lombok.Setter;
 public class EmployeeResponseDto {
     private int id;
     private String username;
+    private String password;
     private String role;
     private String firstName;
     private String lastName;
@@ -16,9 +17,10 @@ public class EmployeeResponseDto {
     private String status;
     private String profilePic;
 
-    public EmployeeResponseDto(int id, String username, String role, String firstName, String lastName, String address, String contactNo, String status, String profilePic) {
+    public EmployeeResponseDto(int id, String username, String password, String role, String firstName, String lastName, String address, String contactNo, String status, String profilePic) {
         this.id = id;
         this.username = username;
+        this.password = password;
         this.role = role;
         this.firstName = firstName;
         this.lastName = lastName;

@@ -1,5 +1,6 @@
 package com.SDP.project.models;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,7 +22,7 @@ public class Department {
     @OneToMany(mappedBy = "department", fetch = FetchType.EAGER) // 🔹 Change from LAZY to EAGER
     private List<Employee> employees;
 
-    @OneToMany(mappedBy = "department", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "department", fetch = FetchType.LAZY) // Set to LAZY to avoid fetching all paper types at once
     private List<PaperTypes> paperTypes;
 
     public Department(String name) {

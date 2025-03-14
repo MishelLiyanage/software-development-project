@@ -75,6 +75,7 @@ public class AuthServiceImpli implements AuthService {
             return Optional.of(new EmployeeResponseDto(
                     account.getId(),
                     account.getUsername(),
+                    account.getPassword(),
                     account.getRole(),
                     emp.getFirstName(),
                     emp.getLastName(),
@@ -93,6 +94,7 @@ public class AuthServiceImpli implements AuthService {
             return Optional.of(new SchoolResponseDto(
                     account.getId(),
                     account.getUsername(),
+                    account.getPassword(),
                     account.getRole(),
                     sch.getName(),
                     sch.getAddress(),

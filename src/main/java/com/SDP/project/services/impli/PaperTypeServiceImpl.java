@@ -24,21 +24,20 @@ public class PaperTypeServiceImpl implements PaperTypeService {
 
     @Transactional
     public String savePaperType(PaperTypeDto paperTypeDto){
-        log.info("Saving paper type " + paperTypeDto.getPaperType() + paperTypeDto.getDepartmentName());
         isPaperTypeExists(paperTypeDto);
 
         String paperType = paperTypeDto.getPaperType();
         Department department = departmentRepository.getDepartmentByName(paperTypeDto.getDepartmentName());
-        log.info("Department " + department + " has been created");
-        PaperTypes paperTypes = new PaperTypes(paperType, department);
+//        log.info("Department " + department + " has been created");
+        PaperTypes paperTypes = new PaperTypes(paperType);
+        paperTypes.setDepartment(department);
 
         paperTypeRepository.save(paperTypes);
         return ("Saved a paper type successfully.");
     }
 
     private void isPaperTypeExists(PaperTypeDto paperTypeDto) {
-        Department department = departmentRepository.getDepartmentByName(paperTypeDto.getDepartmentName());
-        boolean paperTypeExists = paperTypeRepository.existsByPaperTypeAndDepartment(paperTypeDto.getPaperType(), department);
+        boolean paperTypeExists = paperTypeRepository.existsByPaperType(paperTypeDto.getPaperType());
 
         log.info("Paper type Exists: " + paperTypeExists); // Debugging log
 
