@@ -8,5 +8,5 @@ import java.util.Map;
 public interface SchoolService {
     String saveSchool(SchoolDto schoolDto);
 
-    public ResponseEntity<Map<String, String>> updateSchoolProfile(SchoolDto schoolDto);
+    ResponseEntity<Map<String, String>> updateSchoolProfile(SchoolDto schoolDto);
 }
