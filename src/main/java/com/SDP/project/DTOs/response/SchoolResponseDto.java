@@ -29,4 +29,13 @@ public class SchoolResponseDto {
         this.principleName = principleName;
         this.principleSignature = principleSignature;
     }
+
+    public SchoolResponseDto(String name, String address, String email, String contactNo, String username, String principleName) {
+        this.name = name;
+        this.address = address;
+        this.email = email;
+        this.contactNo = contactNo;
+        this.username = username;
+        this.principleName = principleName;
+    }
 }

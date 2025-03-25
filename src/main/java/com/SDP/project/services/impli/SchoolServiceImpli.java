@@ -1,5 +1,6 @@
 package com.SDP.project.services.impli;
 
+import com.SDP.project.DTOs.ManageSchoolsDto;
 import com.SDP.project.DTOs.SchoolDto;
 import com.SDP.project.Repository.AccountRepository;
 import com.SDP.project.Repository.SchoolRepository;
@@ -15,9 +16,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -129,4 +129,23 @@ public class SchoolServiceImpli implements SchoolService {
         }
     }
 
+    @Override
+    public List<ManageSchoolsDto> getAllSchools() {
+        List<Account> schoolAccounts = accountRepository.findByRole("ROLE_SCHOOL");
+
+        return schoolAccounts.stream()
+                .map(account -> schoolRepository.findById(account.getId()) // Fetch School
+                        .map(school -> new ManageSchoolsDto(
+                                school.getId(),
+                                school.getName(),
+                                school.getAddress(),
+                                school.getEmail(),
+                                school.getContactNo(),
+                                account.getUsername(),
+                                school.getPrincipleName()
+                        ))
+                        .orElse(null)) // Handle missing records gracefully
+                .filter(Objects::nonNull) // Remove null values
+                .collect(Collectors.toList());
+    }
 }

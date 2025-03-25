@@ -9,4 +9,6 @@ public interface SchoolRepository extends JpaRepository<School, Integer> {
     Optional<Object> findByEmail(String email);
 
     Optional<School> findByAccountId(int id);
+
+    Optional<School> findById(int id);
 }
