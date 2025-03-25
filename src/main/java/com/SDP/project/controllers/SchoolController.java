@@ -1,6 +1,8 @@
 package com.SDP.project.controllers;
 
+import com.SDP.project.DTOs.ManageSchoolsDto;
 import com.SDP.project.DTOs.SchoolDto;
+import com.SDP.project.DTOs.response.SchoolResponseDto;
 import com.SDP.project.services.SchoolService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RequestMapping("/school")
@@ -32,5 +35,11 @@ public class SchoolController {
     @PreAuthorize("hasRole('ROLE_SCHOOL')")
     public ResponseEntity<Map<String, String>> updateSchoolProfile(@Valid @RequestBody SchoolDto schoolDto) {
         return schoolService.updateSchoolProfile(schoolDto);
+    }
+
+    @GetMapping("/all")
+    @PreAuthorize( "hasRole('ROLE_EMPLOYEE')")
+    public List<ManageSchoolsDto> getAllSchools() {
+        return schoolService.getAllSchools();
     }
 }
