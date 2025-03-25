@@ -2,7 +2,6 @@ package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.ManageSchoolsDto;
 import com.SDP.project.DTOs.SchoolDto;
-import com.SDP.project.DTOs.response.SchoolResponseDto;
 import com.SDP.project.services.SchoolService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;

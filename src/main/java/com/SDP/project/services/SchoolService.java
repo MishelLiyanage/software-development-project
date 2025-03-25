@@ -2,7 +2,6 @@ package com.SDP.project.services;
 
 import com.SDP.project.DTOs.ManageSchoolsDto;
 import com.SDP.project.DTOs.SchoolDto;
-import com.SDP.project.DTOs.response.SchoolResponseDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
