@@ -1,8 +1,9 @@
 package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.ModelPaperDto;
+import com.SDP.project.DTOs.response.ModelPaperResponse;
+import com.SDP.project.models.ModelPaper;
 import com.SDP.project.services.ModelPaperService;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -17,11 +18,9 @@ public class ModelPaperController {
     ModelPaperService modelPaperService;
 
     @PostMapping("/")
-    @PreAuthorize( "hasRole('ROLE_ADMIN')")
-    public String saveModelPaper(@Valid @RequestBody ModelPaperDto modelPaperDto) {
-        return modelPaperService.saveModelPaper(modelPaperDto);
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+    public ModelPaperResponse saveModelPaper(@RequestBody ModelPaperDto modelPaperDTO) {
+        ModelPaper modelPaper = modelPaperService.saveModelPaper(modelPaperDTO);
+        return new ModelPaperResponse(true, modelPaper.getId()); // Return success and modelPaperId
     }
-
-//    public String assignModelPaperToEmployee(@Valid @RequestBody ModelPaperDto modelPaperDto) {}
-
 }
