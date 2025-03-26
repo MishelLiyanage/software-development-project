@@ -15,19 +15,16 @@ public class ModelPaperServiceImpl implements ModelPaperService {
         this.modelPaperRepository = modelPaperRepository;
     }
 
-    public String saveModelPaper(ModelPaperDto modelPaperDto){
+    public ModelPaper saveModelPaper(ModelPaperDto modelPaperDto){
         isModelPaperExist(modelPaperDto);
 
-        String category = modelPaperDto.getCategory();
-        String grade = modelPaperDto.getGrade();
-        String paperNo = modelPaperDto.getPaperNo();
-        String partNo = modelPaperDto.getPartNo();
-        String description = modelPaperDto.getDescription();
-        ModelPaper modelPaper = new ModelPaper(category, grade, paperNo, partNo, description);
+        ModelPaper modelPaper = new ModelPaper();
+        modelPaper.setGrade(modelPaperDto.getGrade());
+        modelPaper.setCategory(modelPaperDto.getCategory());
+        modelPaper.setPaperNo(modelPaperDto.getPaperNo());
+        modelPaper.setPartNo(modelPaperDto.getPartNo());
 
-        modelPaperRepository.save(modelPaper);
-
-        return "Saved ModelPaper successfully.";
+        return modelPaperRepository.save(modelPaper);
     }
 
     private void isModelPaperExist(ModelPaperDto modelPaperDto) {
@@ -43,5 +40,4 @@ public class ModelPaperServiceImpl implements ModelPaperService {
             throw new RecordAlreadyExistException("Model paper already exists.");
         }
     }
-
 }
