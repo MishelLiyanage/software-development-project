@@ -30,6 +30,7 @@ public class ModelPaperServiceImpl implements ModelPaperService {
     private void isModelPaperExist(ModelPaperDto modelPaperDto) {
         boolean isModelPaperExist = modelPaperRepository.existsModelPaper(
                 modelPaperDto.getGrade(),
+                modelPaperDto.getCategory(),
                 modelPaperDto.getPaperNo(),
                 modelPaperDto.getPartNo()
         );

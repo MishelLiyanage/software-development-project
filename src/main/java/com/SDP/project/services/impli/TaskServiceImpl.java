@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,11 +25,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public Task saveTask(TaskDto taskDto) {
-        Optional<ModelPaper> modelPaper = modelPaperRepository.findById(Math.toIntExact(taskDto.getModelPaperId()));
+        Optional<ModelPaper> ModelPaper = modelPaperRepository.findById(taskDto.getModelPaper().getId());
 
-        if (modelPaper.isPresent()) {
+        if (ModelPaper.isPresent()) {
             Task task = new Task();
-            task.setModelPaper(modelPaper.get());
+            task.setModelPaper(ModelPaper.get()); // Get the actual ModelPaper object
             task.setCreatedDate(LocalDate.now());
             task.setCreatedTime(LocalTime.now());
             task.setStatus("To Do");
@@ -37,5 +38,10 @@ public class TaskServiceImpl implements TaskService {
         } else {
             throw new RuntimeException("Model Paper not found");
         }
+    }
+
+    @Override
+    public List<Task> getAllTasks() {
+        return taskRepository.findAll();
     }
 }
