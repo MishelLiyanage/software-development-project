@@ -46,7 +46,6 @@ public class SecurityConfiguration {
                         .requestMatchers("/account/login").permitAll()
                         .requestMatchers("/employee/sign-up").permitAll()
                         .requestMatchers("/school/sign-up").permitAll()
-                        .requestMatchers("/school/update-profile").hasRole("SCHOOL")
                         .anyRequest().authenticated() // Secure all other endpoints
                 )
 
