@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ModelPaperRepository extends JpaRepository<ModelPaper, Integer> {
 
-    @Query("SELECT COUNT(m) > 0 FROM ModelPaper m WHERE m.grade = :grade AND m.paperNo = :paperNo AND m.partNo = :partNo")
-    boolean existsModelPaper(@Param("grade") String grade, @Param("paperNo") String paperNo, @Param("partNo") String partNo);
+    @Query("SELECT COUNT(m) > 0 FROM ModelPaper m WHERE m.grade = :grade AND m.category = :category AND m.paperNo = :paperNo AND m.partNo = :partNo")
+    boolean existsModelPaper(@Param("grade") String grade, @Param("category") String category, @Param("paperNo") String paperNo, @Param("partNo") String partNo);
 }
 

@@ -1,4 +1,4 @@
-package com.SDP.project.DTOs.response;
+package com.SDP.project.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,8 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class TaskResponse {
+public class TaskStatusUpdateResponse {
     private boolean success;
-    private int taskId;
+    private String message;
 }
-

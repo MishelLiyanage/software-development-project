@@ -20,7 +20,8 @@ public class ModelPaperController {
     @PostMapping("/")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
     public ModelPaperResponse saveModelPaper(@RequestBody ModelPaperDto modelPaperDTO) {
+        System.out.println(modelPaperDTO);
         ModelPaper modelPaper = modelPaperService.saveModelPaper(modelPaperDTO);
-        return new ModelPaperResponse(true, modelPaper.getId()); // Return success and modelPaperId
+        return new ModelPaperResponse(true, modelPaper); // Return success and modelPaperId
     }
 }

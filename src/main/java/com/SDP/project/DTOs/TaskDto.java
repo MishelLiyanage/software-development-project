@@ -1,5 +1,6 @@
 package com.SDP.project.DTOs;
 
+import com.SDP.project.models.ModelPaper;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -10,7 +11,7 @@ import java.time.LocalTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TaskDto {
-    private int modelPaperId;
+    private ModelPaper modelPaper;
     private LocalDate startedDate;
     private LocalTime startedTime;
     private String status;
