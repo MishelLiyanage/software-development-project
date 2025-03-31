@@ -5,7 +5,9 @@ import com.SDP.project.Repository.ModelPaperRepository;
 import com.SDP.project.Repository.TaskRepository;
 import com.SDP.project.models.ModelPaper;
 import com.SDP.project.models.Task;
+import com.SDP.project.responses.TaskStatusUpdateResponse;
 import com.SDP.project.services.TaskService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -43,5 +45,20 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public TaskStatusUpdateResponse updateTaskStatus(int taskId, String status) {
+        Optional<Task> optionalTask = taskRepository.findById(taskId);
+
+        if (optionalTask.isPresent()) {
+            Task task = optionalTask.get();
+            task.setStatus(status);
+            taskRepository.save(task);
+            return new TaskStatusUpdateResponse(true, "Task status updated successfully");
+        } else {
+            return new TaskStatusUpdateResponse(false, "Task not found");
+        }
     }
 }

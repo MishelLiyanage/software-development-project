@@ -4,8 +4,10 @@ import com.SDP.project.DTOs.TaskDto;
 import com.SDP.project.responses.TaskResponse;
 import com.SDP.project.responses.TaskResponseToSaveTask;
 import com.SDP.project.models.Task;
+import com.SDP.project.responses.TaskStatusUpdateResponse;
 import com.SDP.project.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,5 +33,15 @@ public class TaskController {
         List<Task> tasks = taskService.getAllTasks();
         boolean success = tasks != null && !tasks.isEmpty();
         return new TaskResponse(success, tasks);
+    }
+
+    @PatchMapping("/{taskId}/status")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+    public ResponseEntity<TaskStatusUpdateResponse> updateTaskStatus(
+            @PathVariable int taskId,
+            @RequestParam String status) {
+        System.out.println(taskId + " " + status);
+        TaskStatusUpdateResponse response = taskService.updateTaskStatus(taskId, status);
+        return ResponseEntity.ok(response);
     }
 }

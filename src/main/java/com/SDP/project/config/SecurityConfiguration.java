@@ -72,7 +72,7 @@ public class SecurityConfiguration {
         configuration.setAllowedOrigins(List.of("http://localhost:4200"));
 
         // Define allowed HTTP methods
-        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+        configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
 
         // Define allowed headers in requests
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
