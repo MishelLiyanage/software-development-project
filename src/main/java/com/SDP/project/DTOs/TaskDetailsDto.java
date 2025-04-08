@@ -1,6 +1,5 @@
 package com.SDP.project.DTOs;
 
-import com.SDP.project.models.Employee;
 import lombok.*;
 
 import java.time.LocalDate;

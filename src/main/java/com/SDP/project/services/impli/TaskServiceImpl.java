@@ -22,9 +22,6 @@ public class TaskServiceImpl implements TaskService {
     private TaskRepository taskRepository;
 
     @Autowired
-    private PrintingProgressRepository printingProgressRepository;
-
-    @Autowired
     private EmployeeRepository employeeRepository;
 
     @Autowired

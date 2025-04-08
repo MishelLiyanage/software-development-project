@@ -1,16 +1,13 @@
 package com.SDP.project.controllers;
 
-import com.SDP.project.DTOs.PrintingProgressDetailsDto;
 import com.SDP.project.DTOs.TaskDetailsDto;
 import com.SDP.project.DTOs.TaskDto;
-import com.SDP.project.models.TaskEmployeeAssignment;
 import com.SDP.project.responses.TaskResponse;
 import com.SDP.project.responses.TaskResponseToSaveTask;
 import com.SDP.project.models.Task;
 import com.SDP.project.responses.TaskStatusUpdateResponse;
 import com.SDP.project.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
