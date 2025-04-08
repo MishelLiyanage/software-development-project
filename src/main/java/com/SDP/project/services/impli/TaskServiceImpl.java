@@ -1,10 +1,9 @@
 package com.SDP.project.services.impli;
 
+import com.SDP.project.DTOs.TaskDetailsDto;
 import com.SDP.project.DTOs.TaskDto;
-import com.SDP.project.Repository.ModelPaperRepository;
-import com.SDP.project.Repository.TaskRepository;
-import com.SDP.project.models.ModelPaper;
-import com.SDP.project.models.Task;
+import com.SDP.project.Repository.*;
+import com.SDP.project.models.*;
 import com.SDP.project.responses.TaskStatusUpdateResponse;
 import com.SDP.project.services.TaskService;
 import jakarta.transaction.Transactional;
@@ -21,6 +20,18 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Autowired
+    private PrintingProgressRepository printingProgressRepository;
+
+    @Autowired
+    private EmployeeRepository employeeRepository;
+
+    @Autowired
+    private TaskEmployeeAssignmentRepository taskEmployeeAssignmentRepository;
+
+    @Autowired
+    private TaskEmployeeAssignmentRepository assignmentRepository;
 
     @Autowired
     private ModelPaperRepository modelPaperRepository;
@@ -60,5 +71,58 @@ public class TaskServiceImpl implements TaskService {
         } else {
             return new TaskStatusUpdateResponse(false, "Task not found");
         }
+    }
+
+    @Override
+    public boolean assignEmployeeToTask(TaskDetailsDto taskDetailsDto) {
+        Optional<Task> optionalTask = taskRepository.findById(taskDetailsDto.getTaskId());
+        System.out.println(taskDetailsDto.getTaskId() + " " +
+                taskDetailsDto.getAssignedDate() + " " +
+                taskDetailsDto.getEmployeeId() + " " +
+                taskDetailsDto.getDeadline());
+
+        if (optionalTask.isPresent()) {
+            // Check if assignment already exists for this taskId
+            TaskEmployeeAssignment assignment = taskEmployeeAssignmentRepository.findByTaskId(taskDetailsDto.getTaskId());
+
+            if (assignment == null) {
+                // No existing assignment, create a new one
+                assignment = new TaskEmployeeAssignment();
+                assignment.setTaskId(taskDetailsDto.getTaskId());
+            }
+
+            // Set or update assignment details
+            assignment.setAssignedDate(taskDetailsDto.getAssignedDate());
+            assignment.setDeadline(taskDetailsDto.getDeadline());
+
+            // Validate and set employee
+            Optional<Employee> employee = employeeRepository.findById(taskDetailsDto.getEmployeeId());
+            if (employee.isPresent()) {
+                assignment.setAssignedEmployee(employee.get());
+            } else {
+                throw new RuntimeException("Employee not found");
+            }
+
+            // Save (create or update)
+            taskEmployeeAssignmentRepository.save(assignment);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public TaskDetailsDto getAssignmentDetails(int taskId) {
+        TaskEmployeeAssignment assignment = assignmentRepository.findByTaskId(taskId);
+
+        if (assignment != null) {
+            TaskDetailsDto dto = new TaskDetailsDto();
+            dto.setTaskId(taskId);
+            dto.setEmployeeId(assignment.getAssignedEmployee().getId());
+            dto.setAssignedDate(assignment.getAssignedDate());
+            dto.setDeadline(assignment.getDeadline());
+            return dto;
+        }
+
+        return null;
     }
 }

@@ -1,6 +1,7 @@
 package com.SDP.project.services.impli;
 
 import com.SDP.project.DTOs.EmployeeDto;
+import com.SDP.project.DTOs.EmployeeInfoDto;
 import com.SDP.project.Repository.AccountRepository;
 import com.SDP.project.Repository.DepartmentRepository;
 import com.SDP.project.Repository.EmployeeRepository;
@@ -15,6 +16,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -81,5 +85,15 @@ public class EmployeeServiceImpli implements EmployeeService {
             log.warn("Employee with username '{}' already exists", employeeDto.getUsername());
             throw new RecordAlreadyExistException("An employee with the username '" + employeeDto.getUsername() + "' already exists.");
         }
+    }
+
+    @Override
+    public List<EmployeeInfoDto> getEmployeeNamesWithDepartment() {
+        return employeeRepository.findAll().stream()
+                .map(emp -> new EmployeeInfoDto(
+                        emp.getId(),
+                        emp.getFirstName() + " " + emp.getLastName() + " - " + emp.getDepartment().getName()
+                ))
+                .collect(Collectors.toList());
     }
 }
