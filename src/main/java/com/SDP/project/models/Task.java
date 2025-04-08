@@ -20,10 +20,10 @@ public class Task {
     @JoinColumn(name = "modelPaperId", nullable = false)
     private ModelPaper modelPaper;
 
-    @Column(name = "created_Date")
+    @Column(name = "created_date")
     private LocalDate createdDate;
 
-    @Column(name = "created_Time")
+    @Column(name = "created_time")
     private LocalTime createdTime;
 
     private String status;
