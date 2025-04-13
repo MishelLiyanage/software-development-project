@@ -4,7 +4,6 @@ import com.SDP.project.DTOs.InventoryDto;
 import com.SDP.project.Repository.InventoryRepository;
 import com.SDP.project.Repository.TaskRepository;
 import com.SDP.project.models.Inventory;
-import com.SDP.project.models.ModelPaper;
 import com.SDP.project.services.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
