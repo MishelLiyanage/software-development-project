@@ -33,6 +33,7 @@ public class PrintingProgressController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
     public ResponseEntity<PrintingProgress> getPrintingTask(@PathVariable int taskId) {
         PrintingProgress progress = printingProgressService.getByTaskId(taskId);
+//        System.out.println("**********************************" +progress.get());
         return ResponseEntity.ok(progress);
     }
 }

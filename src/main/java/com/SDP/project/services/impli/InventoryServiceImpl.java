@@ -39,4 +39,8 @@ public class InventoryServiceImpl implements InventoryService {
 
         return inventoryRepository.save(inventory);
     }
+
+    public Optional<Inventory> findByTaskId(int taskId) {
+        return inventoryRepository.findByTaskId(taskId);
+    }
 }
