@@ -1,9 +1,7 @@
 package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.PaperSetDto;
-import com.SDP.project.DTOs.response.ModelPaperResponse;
 import com.SDP.project.DTOs.response.PaperSetResponse;
-import com.SDP.project.models.ModelPaper;
 import com.SDP.project.models.PaperSets;
 import com.SDP.project.services.PaperSetService;
 import jakarta.validation.Valid;
