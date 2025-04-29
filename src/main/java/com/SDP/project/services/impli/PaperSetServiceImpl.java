@@ -82,8 +82,7 @@ public class PaperSetServiceImpl implements PaperSetService {
         String category = words[2];                // Remaining as category
 
         // Query the repository with grade and category
-        int papersetId = papersetRepository.findPaperSetIdByPublicationName(grade, category);
 
-        return papersetId;
+        return papersetRepository.findPaperSetIdByPublicationName(grade, category);
     }
 }
