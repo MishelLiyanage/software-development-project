@@ -1,7 +1,12 @@
 package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.OrderItemDTO;
+import com.SDP.project.DTOs.OrderRequestDTO;
+import com.SDP.project.DTOs.response.OrderResponseDto;
+import com.SDP.project.models.Order;
+import com.SDP.project.models.PrintingProgress;
 import com.SDP.project.services.ModelPaperService;
+import com.SDP.project.services.OrderService;
 import com.SDP.project.services.PaperSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,10 +22,10 @@ import java.util.List;
 @RestController
 public class OrdersController {
     @Autowired
-    private ModelPaperService modelPaperService;
+    private PaperSetService paperSetService;
 
     @Autowired
-    private PaperSetService paperSetService;
+    private OrderService orderService;
 
     @PostMapping("/calculate-total")
     @PreAuthorize("hasAnyRole('ROLE_SCHOOL')")
@@ -35,4 +40,9 @@ public class OrdersController {
         return ResponseEntity.ok(total);
     }
 
+    @PostMapping("/place-order")
+    @PreAuthorize("hasAnyRole('ROLE_SCHOOL')")
+    public ResponseEntity<OrderResponseDto> placeOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
+        return orderService.placeOrder(orderRequestDTO);
+    }
 }
