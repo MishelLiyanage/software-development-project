@@ -1,9 +1,7 @@
 package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.PaymentRequestDto;
-import com.SDP.project.DTOs.response.PaperSetResponse;
 import com.SDP.project.DTOs.response.PaymentResponse;
-import com.SDP.project.models.PaperSets;
 import com.SDP.project.models.Payment;
 import com.SDP.project.services.PaymentService;
 import jakarta.validation.Valid;
