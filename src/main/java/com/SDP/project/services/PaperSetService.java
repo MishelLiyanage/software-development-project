@@ -8,4 +8,6 @@ public interface PaperSetService {
     PaperSets savePaperType(@Valid PaperSetDto paperSetDto);
 
     double getPriceByName(String publicationName);
+
+    Integer getPaperSetIdByPublicationName(String publicationName);
 }

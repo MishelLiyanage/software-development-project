@@ -60,8 +60,6 @@ public class PaperSetServiceImpl implements PaperSetService {
         }
         String category = categoryBuilder.toString().trim();
 
-        System.out.println("99999999999999999999999999999999999999999999999999999999999999999999" + "Grade : " + grade + " Category : " + category);
-
         // Find the model paper by grade and category
         PaperSets Paperset = papersetRepository.findByGradeAndCategory(grade, category);
         if (Paperset == null) {
@@ -74,5 +72,18 @@ public class PaperSetServiceImpl implements PaperSetService {
                 .orElseThrow(() -> new RuntimeException("Price not found for modelPaperId: " + modelPaperId));
 
         return paperSetPrice.getPrice();
+    }
+
+    @Override
+    public Integer getPaperSetIdByPublicationName(String publicationName) {
+        String[] words = publicationName.split(" ", 3); // Split into 3 parts max
+
+        String grade = words[0] + " " + words[1];  // Grade + Number
+        String category = words[2];                // Remaining as category
+
+        // Query the repository with grade and category
+        int papersetId = papersetRepository.findPaperSetIdByPublicationName(grade, category);
+
+        return papersetId;
     }
 }

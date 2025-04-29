@@ -11,4 +11,7 @@ public interface PapersetRepository extends JpaRepository<PaperSets, Integer> {
     boolean existsModelPaper(@Param("grade") String grade, @Param("category") String category);
 
     PaperSets findByGradeAndCategory(String grade, String category);
+
+    @Query("SELECT p.id FROM PaperSets p WHERE p.grade = :grade AND p.category = :category")
+    int findPaperSetIdByPublicationName(@Param("grade") String grade, @Param("category") String category);
 }

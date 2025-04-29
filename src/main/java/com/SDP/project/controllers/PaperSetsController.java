@@ -6,11 +6,10 @@ import com.SDP.project.models.PaperSets;
 import com.SDP.project.services.PaperSetService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RequestMapping("/paperset")
 @RestController
@@ -23,5 +22,19 @@ public class PaperSetsController {
     public PaperSetResponse savePaperSet(@Valid @RequestBody PaperSetDto paperSetDto) {
         PaperSets paperSets = paperSetService.savePaperType(paperSetDto);
         return new PaperSetResponse(true, paperSets);
+    }
+
+    @GetMapping("/getIdByName")
+    @PreAuthorize("hasAnyRole('ROLE_SCHOOL')")
+    public ResponseEntity<Integer> getPaperSetIdByPublicationName(@RequestParam("publicationName") String publicationName) {
+        System.out.println("Received publicationName = " + publicationName);
+
+        Integer paperSetId = paperSetService.getPaperSetIdByPublicationName(publicationName);
+        System.out.println("Found paperSetId = " + paperSetId);
+
+//        if (paperSetId == null) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+//        }
+        return ResponseEntity.ok(paperSetId);
     }
 }
