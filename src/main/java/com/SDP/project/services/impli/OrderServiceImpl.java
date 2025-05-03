@@ -3,6 +3,7 @@ package com.SDP.project.services.impli;
 import com.SDP.project.DTOs.OrderRequestDTO;
 import com.SDP.project.DTOs.response.OrderResponseDto;
 import com.SDP.project.Repository.OrderRepository;
+import com.SDP.project.Repository.PaymentRepository;
 import com.SDP.project.models.Order;
 import com.SDP.project.models.OrderItem;
 import com.SDP.project.services.OrderService;
@@ -12,6 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @Service
@@ -24,6 +28,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private OrderRepository orderRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @Override
     @Transactional
@@ -36,10 +42,8 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderedItems = orderRequestDTO.getOrderedPublications();
 
         for (OrderItem item : orderedItems) {
-
             item.setOrder(order); // set the parent order for each item
         }
-
         order.setOrderItems(orderedItems);
 
         Order savedOrder = orderRepository.save(order);
@@ -66,14 +70,16 @@ public class OrderServiceImpl implements OrderService {
 
     private String md5(String input) {
         try {
-            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
-            byte[] array = md.digest(input.getBytes());
-            StringBuilder sb = new StringBuilder();
-            for (byte b : array) {
-                sb.append(String.format("%02x", b));
+            MessageDigest md = MessageDigest.getInstance("MD5");
+            byte[] messageDigest = md.digest(input.getBytes());
+            BigInteger no = new BigInteger(1, messageDigest);
+            String hashtext = no.toString(16);
+            while (hashtext.length() < 32) {
+                hashtext = "0" + hashtext;
             }
-            return sb.toString();
-        } catch (java.security.NoSuchAlgorithmException e) {
+            return hashtext.toUpperCase();
+        }
+        catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }
