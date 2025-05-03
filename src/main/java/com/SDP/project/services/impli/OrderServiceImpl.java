@@ -6,7 +6,6 @@ import com.SDP.project.Repository.OrderRepository;
 import com.SDP.project.Repository.PaymentRepository;
 import com.SDP.project.models.Order;
 import com.SDP.project.models.OrderItem;
-import com.SDP.project.models.Payment;
 import com.SDP.project.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,8 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalTime;
-import java.util.Date;
 import java.util.List;
 
 @Service
