@@ -13,7 +13,7 @@ public class PaymentRequestDto {
     private int schoolId;
 
     @JsonProperty("order_id")
-    private int orderId;
+    private String orderId;
 
     private float amount;
 

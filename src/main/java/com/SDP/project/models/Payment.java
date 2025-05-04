@@ -21,7 +21,7 @@ public class Payment {
     private int schoolId;
 
     @Column(name = "order_id")
-    private int orderId;
+    private String orderId;
 
     private float amount;
 
