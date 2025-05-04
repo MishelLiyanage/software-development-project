@@ -15,6 +15,7 @@ public class OrderRequestDTO {
     private String status;
     private List<OrderItem> orderedPublications;
     private float totalAmount;
+    private String paymentMethod;
     private String notes; // if needed
 
 }

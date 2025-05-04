@@ -16,7 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -39,6 +41,10 @@ public class OrderServiceImpl implements OrderService {
         order.setStatus(orderRequestDTO.getStatus() != null ? orderRequestDTO.getStatus() : "Order Completed");
         order.setNotes(orderRequestDTO.getNotes());
 
+        // Generate custom order ID
+        String customOrderId = generateCustomOrderId(orderRequestDTO.getPaymentMethod());
+        order.setId(customOrderId);
+
         List<OrderItem> orderedItems = orderRequestDTO.getOrderedPublications();
 
         for (OrderItem item : orderedItems) {
@@ -50,7 +56,7 @@ public class OrderServiceImpl implements OrderService {
 
         // generate the hash value for the payment
         String merchantSecret = merchant_secret;
-        String orderId = String.valueOf(savedOrder.getId());
+        String orderId = savedOrder.getId(); // Now a String like "LO-0001"
         String amount = String.format("%.2f", orderRequestDTO.getTotalAmount());
         String currency = "LKR"; // assuming Sri Lankan Rupees
 
@@ -68,6 +74,38 @@ public class OrderServiceImpl implements OrderService {
         return ResponseEntity.ok(responseDto);
     }
 
+    private String generateCustomOrderId(String paymentMethod) {
+        // Find the latest order to determine the next number
+        Order latestOrder = orderRepository.findTopByOrderByIdDesc();
+        int nextNumber = 1;
+
+        if (latestOrder != null && latestOrder.getId() != null) {
+            String latestId = latestOrder.getId();
+            // Extract numeric part by removing prefix (LO- or VP-)
+            String numericPart = latestId.replaceFirst("^(LO-|VP-)", "");
+            try {
+                nextNumber = Integer.parseInt(numericPart) + 1;
+            } catch (NumberFormatException e) {
+                // Fallback to 1 if the numeric part is invalid
+                nextNumber = 1;
+            }
+        }
+
+        // Format the number as a 4-digit string (e.g., 1 -> "0001")
+        DecimalFormat formatter = new DecimalFormat("0000");
+        String formattedNumber = formatter.format(nextNumber);
+
+        // Determine prefix based on payment method
+        if ("Online".equals(paymentMethod) || "Bank Payment / Any Other".equals(paymentMethod)) {
+            return "LO-" + formattedNumber;
+        } else if ("Cash".equals(paymentMethod)) {
+            return "VP-" + formattedNumber;
+        } else {
+            // Fallback for invalid or unrecognized payment methods
+            return "LO-" + formattedNumber; // Default to LO- prefix
+        }
+    }
+
     private String md5(String input) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -78,8 +116,7 @@ public class OrderServiceImpl implements OrderService {
                 hashtext = "0" + hashtext;
             }
             return hashtext.toUpperCase();
-        }
-        catch (NoSuchAlgorithmException e) {
+        } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
     }

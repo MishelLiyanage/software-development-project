@@ -12,7 +12,7 @@ public class OrderResponseDto {
     private boolean success;
 
     @JsonProperty("order_id")
-    private int orderId;
+    private String orderId;
 
     private String status;
 
