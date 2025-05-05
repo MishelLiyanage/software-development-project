@@ -2,7 +2,6 @@ package com.SDP.project.services.impli;
 
 import com.SDP.project.DTOs.ManageSchoolsDto;
 import com.SDP.project.DTOs.SchoolDto;
-import com.SDP.project.DTOs.UpdateOrderDto;
 import com.SDP.project.DTOs.UpdateSchoolDto;
 import com.SDP.project.Repository.AccountRepository;
 import com.SDP.project.Repository.SchoolRepository;
