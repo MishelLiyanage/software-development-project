@@ -1,10 +1,7 @@
 package com.SDP.project.Repository;
 
-import com.SDP.project.models.Order;
 import com.SDP.project.models.Payment;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
