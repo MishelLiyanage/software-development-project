@@ -1,17 +1,16 @@
 package com.SDP.project.controllers;
 
+import com.SDP.project.DTOs.AllOrdersDto;
 import com.SDP.project.DTOs.OrderItemDTO;
 import com.SDP.project.DTOs.OrderRequestDTO;
+import com.SDP.project.DTOs.UpdateOrderDto;
 import com.SDP.project.DTOs.response.OrderResponseDto;
 import com.SDP.project.services.OrderService;
 import com.SDP.project.services.PaperSetService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -41,5 +40,22 @@ public class OrdersController {
     @PreAuthorize("hasAnyRole('ROLE_SCHOOL')")
     public ResponseEntity<OrderResponseDto> placeOrder(@RequestBody OrderRequestDTO orderRequestDTO) {
         return orderService.placeOrder(orderRequestDTO);
+    }
+
+    @GetMapping("/getAllOrders")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public ResponseEntity<List<AllOrdersDto>> getAllOrders() {
+        return ResponseEntity.ok(orderService.getAllOrders());
+    }
+
+    @PatchMapping("/updateOrder")
+    public ResponseEntity<UpdateOrderDto> updateOrder(@RequestBody UpdateOrderDto updateOrderDTO) {
+        return ResponseEntity.ok(orderService.updateOrder(updateOrderDTO));
+    }
+
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<Void> deleteOrder(@PathVariable String orderId) {
+        orderService.deleteOrder(orderId);
+        return ResponseEntity.noContent().build();
     }
 }
