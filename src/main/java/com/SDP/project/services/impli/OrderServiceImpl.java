@@ -1,11 +1,15 @@
 package com.SDP.project.services.impli;
 
+import com.SDP.project.DTOs.AllOrdersDto;
 import com.SDP.project.DTOs.OrderRequestDTO;
+import com.SDP.project.DTOs.UpdateOrderDto;
 import com.SDP.project.DTOs.response.OrderResponseDto;
+import com.SDP.project.Repository.OrderItemRepository;
 import com.SDP.project.Repository.OrderRepository;
 import com.SDP.project.Repository.PaymentRepository;
 import com.SDP.project.models.Order;
 import com.SDP.project.models.OrderItem;
+import com.SDP.project.models.Payment;
 import com.SDP.project.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,7 +21,10 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderServiceImpl implements OrderService {
@@ -31,6 +38,8 @@ public class OrderServiceImpl implements OrderService {
     private OrderRepository orderRepository;
     @Autowired
     private PaymentRepository paymentRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     @Override
     @Transactional
@@ -118,5 +127,85 @@ public class OrderServiceImpl implements OrderService {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public List<AllOrdersDto> getAllOrders() {
+        return orderRepository.findAllOrdersWithDetails().stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private AllOrdersDto convertToDTO(Object[] result) {
+        AllOrdersDto dto = new AllOrdersDto();
+        dto.setOrderId((String) result[0]);
+        dto.setSchoolName((String) result[1]);
+        dto.setCity((String) result[2]);
+        dto.setPaymentStatus(result[3] != null ? (String) result[3] : "");
+        dto.setPaymentMethod(result[4] != null ? (String) result[4] : "");
+
+        // Parse date (expected format: "yyyy-MM-dd")
+        if (result[5] instanceof java.sql.Date) {
+            dto.setDate(new java.util.Date(((java.sql.Date) result[5]).getTime()));
+        } else {
+            dto.setDate(null);
+        }
+
+        // result[6] is java.sql.Time or java.time.LocalTime
+        if (result[6] instanceof java.sql.Time) {
+            dto.setTime(((java.sql.Time) result[6]).toLocalTime());
+        } else if (result[6] instanceof LocalTime) {
+            dto.setTime((LocalTime) result[6]);
+        } else {
+            dto.setTime(null);
+        }
+
+        dto.setAmount(result[7] != null ? result[7].toString() : "");
+        return dto;
+    }
+
+    @Override
+    public UpdateOrderDto updateOrder(UpdateOrderDto updatedOrder) {
+        Optional<Payment> existingOrderOpt = paymentRepository.findByOrderId(updatedOrder.getOrderId());
+
+        if (existingOrderOpt.isPresent()) {
+            Payment existingOrder = existingOrderOpt.get();
+
+            existingOrder.setStatus(updatedOrder.getPaymentStatus());
+            existingOrder.setPaymentMethod(updatedOrder.getPaymentMethod());
+
+            Payment payment = paymentRepository.save(existingOrder);
+
+            UpdateOrderDto updatedOrderDto = new UpdateOrderDto();
+
+            updatedOrderDto.setOrderId(payment.getOrderId());
+            updatedOrderDto.setPaymentStatus(payment.getStatus());
+            updatedOrderDto.setPaymentMethod(payment.getPaymentMethod());
+
+            return updatedOrderDto;
+        } else {
+            throw new RuntimeException("Order with ID " + updatedOrder.getOrderId() + " not found.");
+        }
+    }
+
+    @Override
+    @Transactional
+    public void deleteOrder(String orderId) {
+        Order order = orderRepository.findOrderById(orderId)
+                .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));
+        orderRepository.delete(order);
+
+        List<OrderItem> orderItems = orderItemRepository.getOrderItemsByOrderId(orderId);
+
+        if (!orderItems.isEmpty()) {
+            orderItemRepository.deleteAll(orderItems);
+            System.out.println("Deleted " + orderItems.size() + " order items for orderId: " + orderId);
+        } else {
+            System.out.println("No order items found for orderId: " + orderId);
+        }
+
+        Payment payment = paymentRepository.findByOrderId(orderId)
+                .orElseThrow(() -> new RuntimeException("Payment not found with ID: " + orderId));
+        paymentRepository.delete(payment);
     }
 }
