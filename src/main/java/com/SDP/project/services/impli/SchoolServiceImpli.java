@@ -2,10 +2,11 @@ package com.SDP.project.services.impli;
 
 import com.SDP.project.DTOs.ManageSchoolsDto;
 import com.SDP.project.DTOs.SchoolDto;
+import com.SDP.project.DTOs.UpdateOrderDto;
+import com.SDP.project.DTOs.UpdateSchoolDto;
 import com.SDP.project.Repository.AccountRepository;
 import com.SDP.project.Repository.SchoolRepository;
-import com.SDP.project.models.Account;
-import com.SDP.project.models.School;
+import com.SDP.project.models.*;
 import com.SDP.project.services.SchoolService;
 import com.SDP.project.shared.ApplicationConstants;
 import com.SDP.project.shared.exceptions.RecordAlreadyExistException;
@@ -50,8 +51,9 @@ public class SchoolServiceImpli implements SchoolService {
             String contact_no = schoolDto.getContactNo();
             String email = schoolDto.getEmail();
             String principle_name = schoolDto.getPrincipleName();
+            String city = schoolDto.getCity();
             String principle_signature = schoolDto.getPrincipleSignature();
-            School school = new School(name, address, contact_no, email, principle_name, principle_signature);
+            School school = new School(name, address, contact_no, email, principle_name, city, principle_signature);
 
             // Set the Account object instead of account ID
             school.setAccount(savedAccount);
@@ -88,12 +90,12 @@ public class SchoolServiceImpli implements SchoolService {
         try {
             log.info("In the SchoolServiceImpli updateSchoolProfile");
 
-            Optional<Object> optionalSchool = schoolRepository.findByEmail(schoolDto.getEmail());
+            Optional<School> optionalSchool = schoolRepository.findByEmail(schoolDto.getEmail());
             if (optionalSchool.isEmpty()) {
                 throw new RuntimeException("School not found with ID: " + schoolDto.getEmail());
             }
 
-            School school = (School) optionalSchool.get();
+            School school = optionalSchool.get();
 
             // Update school details
             school.setName(schoolDto.getName());
@@ -139,6 +141,7 @@ public class SchoolServiceImpli implements SchoolService {
                                 school.getId(),
                                 school.getName(),
                                 school.getAddress(),
+                                school.getCity(),
                                 school.getEmail(),
                                 school.getContactNo(),
                                 account.getUsername(),
@@ -148,4 +151,47 @@ public class SchoolServiceImpli implements SchoolService {
                 .filter(Objects::nonNull) // Remove null values
                 .collect(Collectors.toList());
     }
+
+    @Override
+    public School updateOrder(UpdateSchoolDto updateSchoolDto) {
+        Optional<School> existingSchoolOpt = schoolRepository.findByEmail((updateSchoolDto.getEmail()));
+
+        if (existingSchoolOpt.isPresent()) {
+            School existingSchool = existingSchoolOpt.get();
+
+            existingSchool.setName(updateSchoolDto.getName());
+            existingSchool.setAddress(updateSchoolDto.getAddress());
+            existingSchool.setCity(updateSchoolDto.getCity());
+            existingSchool.setEmail(updateSchoolDto.getEmail());
+            existingSchool.setContactNo(updateSchoolDto.getContactNo());
+            existingSchool.setPrincipleName(updateSchoolDto.getPrincipleName());
+
+            School school = schoolRepository.save(existingSchool);
+
+            return school;
+        } else {
+            throw new RuntimeException("School with email " + updateSchoolDto.getEmail() + " not found.");
+        }
+    }
+
+//    @Override
+//    @org.springframework.transaction.annotation.Transactional
+//    public void deleteOrder(String orderId) {
+//        Order order = orderRepository.findOrderById(orderId)
+//                .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));
+//        orderRepository.delete(order);
+//
+//        List<OrderItem> orderItems = orderItemRepository.getOrderItemsByOrderId(orderId);
+//
+//        if (!orderItems.isEmpty()) {
+//            orderItemRepository.deleteAll(orderItems);
+//            System.out.println("Deleted " + orderItems.size() + " order items for orderId: " + orderId);
+//        } else {
+//            System.out.println("No order items found for orderId: " + orderId);
+//        }
+//
+//        Payment payment = paymentRepository.findByOrderId(orderId)
+//                .orElseThrow(() -> new RuntimeException("Payment not found with ID: " + orderId));
+//        paymentRepository.delete(payment);
+//    }
 }

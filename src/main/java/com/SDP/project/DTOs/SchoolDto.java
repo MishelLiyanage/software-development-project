@@ -37,6 +37,9 @@ public class SchoolDto {
     @JsonProperty("principle_name")
     private String principleName;
 
+    @NotBlank(message = "City is required")
+    private String city;
+
     @NotBlank(message = "Principle's signature is required")
     @JsonProperty("principle_signature")
     private String principleSignature;

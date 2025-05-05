@@ -2,6 +2,9 @@ package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.ManageSchoolsDto;
 import com.SDP.project.DTOs.SchoolDto;
+import com.SDP.project.DTOs.UpdateOrderDto;
+import com.SDP.project.DTOs.UpdateSchoolDto;
+import com.SDP.project.models.School;
 import com.SDP.project.services.SchoolService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,5 +43,11 @@ public class SchoolController {
     @PreAuthorize( "hasRole('ROLE_EMPLOYEE')")
     public List<ManageSchoolsDto> getAllSchools() {
         return schoolService.getAllSchools();
+    }
+
+    @PatchMapping("/updateSchool")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public ResponseEntity<School> updateSchool(@RequestBody UpdateSchoolDto updateSchoolDto) {
+        return ResponseEntity.ok(schoolService.updateOrder(updateSchoolDto));
     }
 }

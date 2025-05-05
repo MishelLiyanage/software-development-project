@@ -28,6 +28,8 @@ public class School {
     @Column(name = "principle_name")
     private String principleName;
 
+    private String city;
+
     @Column(name = "principle_signature")
     private String principleSignature;
 
@@ -36,12 +38,13 @@ public class School {
     private Account account;
 
 
-    public School(String name, String address, String contactNo, String email, String principleName, String principleSignature) {
+    public School(String name, String address, String contactNo, String email, String principleName, String city, String principleSignature) {
         this.name = name;
         this.address = address;
         this.contactNo = contactNo;
         this.email = email;
         this.principleName = principleName;
+        this.city = city;
         this.principleSignature = principleSignature;
     }
 }
