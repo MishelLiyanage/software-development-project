@@ -18,15 +18,17 @@ public class ManageSchoolsDto {
 
     private String name;
     private String address;
+    private String city;
     private String email;
     private String contactNo;
     private String username;
     private String principleName;
 
-    public ManageSchoolsDto(int id, String name, String address, String email, String contactNo,  String username, String principleName) {
+    public ManageSchoolsDto(int id, String name, String address, String city, String email, String contactNo,  String username, String principleName) {
         this.schoolId = id;
         this.name = name;
         this.address = address;
+        this.city = city;
         this.email = email;
         this.contactNo = contactNo;
         this.username = username;
