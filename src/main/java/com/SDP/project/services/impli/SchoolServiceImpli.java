@@ -3,8 +3,7 @@ package com.SDP.project.services.impli;
 import com.SDP.project.DTOs.ManageSchoolsDto;
 import com.SDP.project.DTOs.SchoolDto;
 import com.SDP.project.DTOs.UpdateSchoolDto;
-import com.SDP.project.Repository.AccountRepository;
-import com.SDP.project.Repository.SchoolRepository;
+import com.SDP.project.Repository.*;
 import com.SDP.project.models.*;
 import com.SDP.project.services.SchoolService;
 import com.SDP.project.shared.ApplicationConstants;
@@ -29,6 +28,12 @@ public class SchoolServiceImpli implements SchoolService {
     private AccountRepository accountRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private OrderRepository orderRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @Transactional
     public String saveSchool(SchoolDto schoolDto) {
@@ -173,24 +178,32 @@ public class SchoolServiceImpli implements SchoolService {
         }
     }
 
-//    @Override
-//    @org.springframework.transaction.annotation.Transactional
-//    public void deleteOrder(String orderId) {
-//        Order order = orderRepository.findOrderById(orderId)
-//                .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));
-//        orderRepository.delete(order);
-//
-//        List<OrderItem> orderItems = orderItemRepository.getOrderItemsByOrderId(orderId);
-//
-//        if (!orderItems.isEmpty()) {
-//            orderItemRepository.deleteAll(orderItems);
-//            System.out.println("Deleted " + orderItems.size() + " order items for orderId: " + orderId);
-//        } else {
-//            System.out.println("No order items found for orderId: " + orderId);
-//        }
-//
-//        Payment payment = paymentRepository.findByOrderId(orderId)
-//                .orElseThrow(() -> new RuntimeException("Payment not found with ID: " + orderId));
-//        paymentRepository.delete(payment);
-//    }
+    @Override
+    @Transactional
+    public void deleteSchool(String schoolEmail) {
+        School school = schoolRepository.findByEmail(schoolEmail)
+                .orElseThrow(() -> new RuntimeException("School not found with Email: " + schoolEmail));
+        schoolRepository.delete(school);
+
+        int schoolId = school.getId();
+
+        Order order = orderRepository.findBySchoolId(schoolId);
+
+        if (order != null) {
+            orderRepository.delete(order);
+        }
+
+        List<OrderItem> orderItems = orderItemRepository.getOrderItemsByOrderId(order.getId());
+
+        if (!orderItems.isEmpty()) {
+            orderItemRepository.deleteAll(orderItems);
+            System.out.println("Deleted " + orderItems.size() + " order items for orderId: " + order.getId());
+        } else {
+            System.out.println("No order items found for orderId: " + order.getId());
+        }
+
+        Payment payment = paymentRepository.findByOrderId(order.getId())
+                .orElseThrow(() -> new RuntimeException("Payment not found with ID: " + order.getId()));
+        paymentRepository.delete(payment);
+    }
 }

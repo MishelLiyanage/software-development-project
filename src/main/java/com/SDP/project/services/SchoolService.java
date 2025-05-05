@@ -17,4 +17,6 @@ public interface SchoolService {
     List<ManageSchoolsDto> getAllSchools();
 
     School updateOrder(UpdateSchoolDto updateSchoolDto);
+
+    void deleteSchool(String schoolEmail);
 }

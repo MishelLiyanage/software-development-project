@@ -49,11 +49,13 @@ public class OrdersController {
     }
 
     @PatchMapping("/updateOrder")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public ResponseEntity<UpdateOrderDto> updateOrder(@RequestBody UpdateOrderDto updateOrderDTO) {
         return ResponseEntity.ok(orderService.updateOrder(updateOrderDTO));
     }
 
     @DeleteMapping("/{orderId}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public ResponseEntity<Void> deleteOrder(@PathVariable String orderId) {
         orderService.deleteOrder(orderId);
         return ResponseEntity.noContent().build();

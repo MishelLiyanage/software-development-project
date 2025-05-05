@@ -49,4 +49,11 @@ public class SchoolController {
     public ResponseEntity<School> updateSchool(@RequestBody UpdateSchoolDto updateSchoolDto) {
         return ResponseEntity.ok(schoolService.updateOrder(updateSchoolDto));
     }
+
+    @DeleteMapping("/{schoolEmail}")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public ResponseEntity<Void> deleteSchool(@PathVariable String schoolEmail) {
+        schoolService.deleteSchool(schoolEmail);
+        return ResponseEntity.noContent().build();
+    }
 }
