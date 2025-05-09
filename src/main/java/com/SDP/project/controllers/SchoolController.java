@@ -39,7 +39,7 @@ public class SchoolController {
     }
 
     @GetMapping("/all")
-    @PreAuthorize( "hasRole('ROLE_EMPLOYEE')")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public List<ManageSchoolsDto> getAllSchools() {
         return schoolService.getAllSchools();
     }
