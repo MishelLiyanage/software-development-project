@@ -1,10 +1,8 @@
 package com.SDP.project.controllers;
 
-import com.SDP.project.DTOs.AllOrdersDto;
-import com.SDP.project.DTOs.OrderItemDTO;
-import com.SDP.project.DTOs.OrderRequestDTO;
-import com.SDP.project.DTOs.UpdateOrderDto;
+import com.SDP.project.DTOs.*;
 import com.SDP.project.DTOs.response.OrderResponseDto;
+import com.SDP.project.Repository.OrderItemRepository;
 import com.SDP.project.services.OrderService;
 import com.SDP.project.services.PaperSetService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +20,8 @@ public class OrdersController {
 
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
 
     @PostMapping("/calculate-total")
     @PreAuthorize("hasAnyRole('ROLE_SCHOOL')")
@@ -59,5 +59,11 @@ public class OrdersController {
     public ResponseEntity<Void> deleteOrder(@PathVariable String orderId) {
         orderService.deleteOrder(orderId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/distribution")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public List<OrderCategoryData> getOrderDistribution() {
+        return orderService.getOrderDistribution();
     }
 }

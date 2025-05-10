@@ -1,6 +1,7 @@
 package com.SDP.project.services.impli;
 
 import com.SDP.project.DTOs.AllOrdersDto;
+import com.SDP.project.DTOs.OrderCategoryData;
 import com.SDP.project.DTOs.OrderRequestDTO;
 import com.SDP.project.DTOs.UpdateOrderDto;
 import com.SDP.project.DTOs.response.OrderResponseDto;
@@ -207,5 +208,21 @@ public class OrderServiceImpl implements OrderService {
         Payment payment = paymentRepository.findByOrderId(orderId)
                 .orElseThrow(() -> new RuntimeException("Payment not found with ID: " + orderId));
         paymentRepository.delete(payment);
+    }
+
+    @Override
+    public List<OrderCategoryData> getOrderDistribution() {
+        List<Object[]> rawResults = orderItemRepository.getRawOrderDistribution("Scholarship");
+
+        long total = rawResults.stream()
+                .mapToLong(obj -> (Long) obj[1])
+                .sum();
+
+        return rawResults.stream()
+                .map(obj -> new OrderCategoryData(
+                        (String) obj[0],
+                        Math.round(((Long) obj[1]) * 100.0 / total * 100.0) / 100.0 // round to 2 decimals
+                ))
+                .collect(Collectors.toList());
     }
 }
