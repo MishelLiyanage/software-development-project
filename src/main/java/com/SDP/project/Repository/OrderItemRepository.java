@@ -21,4 +21,11 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Integer> {
 
     @Query(value = "SELECT COUNT(DISTINCT oi.order_id) FROM order_item oi JOIN paper_sets ps ON oi.paper_set_id = ps.id WHERE ps.grade = 'Grade 3'", nativeQuery = true)
     int countGrade3ScholarshipOrders();
+
+    @Query("SELECT CONCAT(p.grade, ' Scholarship ', p.category), COUNT(o) " +
+            "FROM OrderItem o JOIN PaperSets p ON o.paperSetId = p.id " +
+            "WHERE p.category LIKE %:keyword% " +
+            "GROUP BY p.grade, p.category")
+    List<Object[]> getRawOrderDistribution(@Param("keyword") String keyword);
+
 }
