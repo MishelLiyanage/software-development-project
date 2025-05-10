@@ -22,11 +22,6 @@ public class EmployeeController {
         return employeeService.saveEmployee(employeeDto);
     }
 
-    @GetMapping("/sample")
-    @PreAuthorize( "hasAnyRole('EMPLOYEE')")
-    public String sampleEmployee(){
-        return "Hello I am a sample employee";
-    }
 
     @GetMapping("/names-with-department")
     @PreAuthorize( "hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")

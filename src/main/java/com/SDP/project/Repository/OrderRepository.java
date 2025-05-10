@@ -23,4 +23,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     Optional<Order> findOrderById(@Param("id") String id);
 
     Order findBySchoolId(int schoolId);
+
+    @Query(value = "SELECT COUNT(*) FROM orders", nativeQuery = true)
+    int countTotalOrders();
+
+    @Query(value = "SELECT COUNT(*) FROM orders WHERE order_status = 'Pending'", nativeQuery = true)
+    int countOrdersToProcess();
 }
