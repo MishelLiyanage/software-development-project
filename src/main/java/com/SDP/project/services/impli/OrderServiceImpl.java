@@ -1,9 +1,6 @@
 package com.SDP.project.services.impli;
 
-import com.SDP.project.DTOs.AllOrdersDto;
-import com.SDP.project.DTOs.OrderCategoryData;
-import com.SDP.project.DTOs.OrderRequestDTO;
-import com.SDP.project.DTOs.UpdateOrderDto;
+import com.SDP.project.DTOs.*;
 import com.SDP.project.DTOs.response.OrderResponseDto;
 import com.SDP.project.Repository.OrderItemRepository;
 import com.SDP.project.Repository.OrderRepository;
@@ -23,6 +20,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -49,6 +48,8 @@ public class OrderServiceImpl implements OrderService {
         order.setSchoolId(orderRequestDTO.getSchoolId());
         order.setStatus(orderRequestDTO.getStatus() != null ? orderRequestDTO.getStatus() : "Order Completed");
         order.setNotes(orderRequestDTO.getNotes());
+        order.setDate(new Date());
+        order.setTime(LocalTime.now());
 
         // Generate custom order ID
         String customOrderId = generateCustomOrderId(orderRequestDTO.getPaymentMethod());
@@ -224,5 +225,18 @@ public class OrderServiceImpl implements OrderService {
                         Math.round(((Long) obj[1]) * 100.0 / total * 100.0) / 100.0 // round to 2 decimals
                 ))
                 .collect(Collectors.toList());
+    }
+
+    public List<MonthlyOrdersDataDto> getMonthlyProcessedOrders() {
+        List<Object[]> results = orderRepository.findMonthlyOrders();
+        List<MonthlyOrdersDataDto> dataList = new ArrayList<>();
+
+        for (Object[] row : results) {
+            String month = (String) row[0];
+            int count = ((Number) row[1]).intValue();
+            dataList.add(new MonthlyOrdersDataDto(month, count));
+        }
+
+        return dataList;
     }
 }

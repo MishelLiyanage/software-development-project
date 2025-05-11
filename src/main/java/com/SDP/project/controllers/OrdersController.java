@@ -66,4 +66,11 @@ public class OrdersController {
     public List<OrderCategoryData> getOrderDistribution() {
         return orderService.getOrderDistribution();
     }
+
+    @GetMapping("/monthlyOrders")
+    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    public ResponseEntity<List<MonthlyOrdersDataDto>> getMonthlyOrders() {
+        List<MonthlyOrdersDataDto> data = orderService.getMonthlyProcessedOrders();
+        return ResponseEntity.ok(data);
+    }
 }

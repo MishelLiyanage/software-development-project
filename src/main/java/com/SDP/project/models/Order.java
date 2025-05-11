@@ -3,7 +3,9 @@ package com.SDP.project.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -20,6 +22,10 @@ public class Order {
     private int schoolId;
 
     private String status;
+
+    private Date date;
+
+    private LocalTime time;
 
     private String notes;
 
