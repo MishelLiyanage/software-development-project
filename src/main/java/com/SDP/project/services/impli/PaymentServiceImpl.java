@@ -1,5 +1,6 @@
 package com.SDP.project.services.impli;
 
+import com.SDP.project.DTOs.MonthlyRevenue;
 import com.SDP.project.DTOs.PaymentRequestDto;
 import com.SDP.project.Repository.PaymentRepository;
 import com.SDP.project.models.Payment;
@@ -9,13 +10,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
 
+    @Override
     public Payment savePaymentDetails(@Valid PaymentRequestDto paymentRequestDto) {
         Payment payment = new Payment();
 
@@ -28,5 +32,19 @@ public class PaymentServiceImpl implements PaymentService {
         payment.setPaymentMethod(paymentRequestDto.getPaymentMethod());
 
         return paymentRepository.save(payment);
+    }
+
+    @Override
+    public List<MonthlyRevenue> getMonthlyRevenue() {
+        List<Object[]> results = paymentRepository.findMonthlyRevenue();
+        List<MonthlyRevenue> revenueList = new ArrayList<>();
+
+        for (Object[] row : results) {
+            String month = (String) row[0];
+            double amount = ((Number) row[1]).doubleValue();
+            revenueList.add(new MonthlyRevenue(month, amount));
+        }
+
+        return revenueList;
     }
 }
