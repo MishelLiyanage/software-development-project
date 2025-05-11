@@ -15,4 +15,9 @@ public interface PaymentRepository extends JpaRepository<Payment, Integer> {
             "GROUP BY MONTH(p.date), MONTHNAME(p.date) " +
             "ORDER BY MONTH(p.date)", nativeQuery = true)
     List<Object[]> findMonthlyRevenue();
+
+    @Query(value = "SELECT p.payment_method AS method, SUM(p.amount) AS amount " +
+            "FROM payment p " +
+            "GROUP BY p.payment_method", nativeQuery = true)
+    List<Object[]> getRevenueByPaymentMethod();
 }

@@ -2,6 +2,7 @@ package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.MonthlyRevenue;
 import com.SDP.project.DTOs.PaymentRequestDto;
+import com.SDP.project.DTOs.PaymentRevenueDto;
 import com.SDP.project.DTOs.response.PaymentResponse;
 import com.SDP.project.models.Payment;
 import com.SDP.project.services.PaymentService;
@@ -30,5 +31,10 @@ public class PaymentController {
     public ResponseEntity<List<MonthlyRevenue>> getMonthlyRevenue() {
         List<MonthlyRevenue> data = paymentService.getMonthlyRevenue();
         return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/revenue")
+    public ResponseEntity<List<PaymentRevenueDto>> getRevenueByMethod() {
+        return ResponseEntity.ok(paymentService.getRevenueByMethod());
     }
 }

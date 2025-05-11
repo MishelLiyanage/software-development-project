@@ -2,6 +2,7 @@ package com.SDP.project.services.impli;
 
 import com.SDP.project.DTOs.MonthlyRevenue;
 import com.SDP.project.DTOs.PaymentRequestDto;
+import com.SDP.project.DTOs.PaymentRevenueDto;
 import com.SDP.project.Repository.PaymentRepository;
 import com.SDP.project.models.Payment;
 import com.SDP.project.services.PaymentService;
@@ -43,6 +44,20 @@ public class PaymentServiceImpl implements PaymentService {
             String month = (String) row[0];
             double amount = ((Number) row[1]).doubleValue();
             revenueList.add(new MonthlyRevenue(month, amount));
+        }
+
+        return revenueList;
+    }
+
+    @Override
+    public List<PaymentRevenueDto> getRevenueByMethod() {
+        List<Object[]> results = paymentRepository.getRevenueByPaymentMethod();
+        List<PaymentRevenueDto> revenueList = new ArrayList<>();
+
+        for (Object[] row : results) {
+            String method = (String) row[0];
+            double amount = ((Number) row[1]).doubleValue();
+            revenueList.add(new PaymentRevenueDto(method, amount));
         }
 
         return revenueList;
