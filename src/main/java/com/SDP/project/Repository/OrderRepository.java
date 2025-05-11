@@ -29,4 +29,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
 
     @Query(value = "SELECT COUNT(*) FROM orders WHERE order_status = 'Pending'", nativeQuery = true)
     int countOrdersToProcess();
+
+    @Query(value = "SELECT MONTHNAME(o.date) AS month, COUNT(*) AS orders " +
+            "FROM orders o " +
+            "GROUP BY MONTH(o.date), MONTHNAME(o.date) " +
+            "ORDER BY MONTH(o.date)", nativeQuery = true)
+    List<Object[]> findMonthlyOrders();
 }
