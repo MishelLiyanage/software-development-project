@@ -2,6 +2,7 @@ package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.EmployeeDto;
 import com.SDP.project.DTOs.EmployeeInfoDto;
+import com.SDP.project.DTOs.response.EmployeeRegistrationResponseDto;
 import com.SDP.project.services.EmployeeService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,10 +19,9 @@ public class EmployeeController {
     EmployeeService employeeService;
 
     @PostMapping("/sign-up")
-    public String registerEmployee(@Valid @RequestBody EmployeeDto employeeDto) {
+    public EmployeeRegistrationResponseDto registerEmployee(@Valid @RequestBody EmployeeDto employeeDto) {
         return employeeService.saveEmployee(employeeDto);
     }
-
 
     @GetMapping("/names-with-department")
     @PreAuthorize( "hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
