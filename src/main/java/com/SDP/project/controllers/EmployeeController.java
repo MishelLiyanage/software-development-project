@@ -2,6 +2,7 @@ package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.EmployeeDto;
 import com.SDP.project.DTOs.EmployeeInfoDto;
+import com.SDP.project.DTOs.ManageEmployeeDto;
 import com.SDP.project.DTOs.response.EmployeeRegistrationResponseDto;
 import com.SDP.project.services.EmployeeService;
 import jakarta.validation.Valid;
@@ -27,5 +28,10 @@ public class EmployeeController {
     @PreAuthorize( "hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
     public ResponseEntity<List<EmployeeInfoDto>> getEmployeeInfo() {
         return ResponseEntity.ok(employeeService.getEmployeeNamesWithDepartment());
+    }
+
+    @GetMapping("/all")
+    public List<ManageEmployeeDto> getAllEmployees() {
+        return employeeService.getAllEmployees();
     }
 }
