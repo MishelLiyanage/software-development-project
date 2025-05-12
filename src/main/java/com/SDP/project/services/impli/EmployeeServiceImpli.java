@@ -2,6 +2,7 @@ package com.SDP.project.services.impli;
 
 import com.SDP.project.DTOs.EmployeeDto;
 import com.SDP.project.DTOs.EmployeeInfoDto;
+import com.SDP.project.DTOs.ManageEmployeeDto;
 import com.SDP.project.DTOs.response.EmployeeRegistrationResponseDto;
 import com.SDP.project.Repository.AccountRepository;
 import com.SDP.project.Repository.DepartmentRepository;
@@ -94,6 +95,22 @@ public class EmployeeServiceImpli implements EmployeeService {
                 .map(emp -> new EmployeeInfoDto(
                         emp.getId(),
                         emp.getFirstName() + " " + emp.getLastName() + " - " + emp.getDepartment().getName()
+                ))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<ManageEmployeeDto> getAllEmployees() {
+        List<Employee> employees = employeeRepository.findAll();
+
+        return employees.stream()
+                .map(e -> new ManageEmployeeDto(
+                        e.getAccount().getUsername(),
+                        e.getFirstName(),
+                        e.getLastName(),
+                        e.getAddress(),
+                        e.getContactNo(),
+                        e.getDepartment().getName()
                 ))
                 .collect(Collectors.toList());
     }
