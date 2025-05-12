@@ -1,14 +1,19 @@
 package com.SDP.project.services.impli;
 
 import com.SDP.project.DTOs.InventoryDto;
+import com.SDP.project.DTOs.InventoryItemsDto;
 import com.SDP.project.Repository.InventoryRepository;
+import com.SDP.project.Repository.ModelPaperRepository;
 import com.SDP.project.Repository.TaskRepository;
 import com.SDP.project.models.Inventory;
+import com.SDP.project.models.ModelPaper;
 import com.SDP.project.services.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class InventoryServiceImpl implements InventoryService {
@@ -17,6 +22,8 @@ public class InventoryServiceImpl implements InventoryService {
     private InventoryRepository inventoryRepository;
     @Autowired
     private TaskRepository taskRepository;
+    @Autowired
+    private ModelPaperRepository modelPaperRepository;
 
     @Override
     public Inventory saveInventory(InventoryDto inventoryDto) {
@@ -42,5 +49,26 @@ public class InventoryServiceImpl implements InventoryService {
 
     public Optional<Inventory> findByTaskId(int taskId) {
         return inventoryRepository.findByTaskId(taskId);
+    }
+
+    @Override
+    public List<InventoryItemsDto> getInventoryLevels() {
+        List<Inventory> inventories = inventoryRepository.findAll();
+
+        return inventories.stream().map(inv -> {
+            int modelPaperId = inv.getModelPaperId(); // Assuming this is a field in your entity
+
+            ModelPaper modelPaper = modelPaperRepository.findById(modelPaperId)
+                    .orElse(null);
+
+            String name = (modelPaper != null)
+                    ? modelPaper.getGrade() + " " +
+                    modelPaper.getCategory() + " " +
+                    modelPaper.getPaperNo() + " " +
+                    modelPaper.getPartNo()
+                    : "Unknown Model Paper";
+
+            return new InventoryItemsDto(name, inv.getQuantity());
+        }).collect(Collectors.toList());
     }
 }
