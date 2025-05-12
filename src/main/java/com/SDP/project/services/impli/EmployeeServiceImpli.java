@@ -2,6 +2,7 @@ package com.SDP.project.services.impli;
 
 import com.SDP.project.DTOs.EmployeeDto;
 import com.SDP.project.DTOs.EmployeeInfoDto;
+import com.SDP.project.DTOs.response.EmployeeRegistrationResponseDto;
 import com.SDP.project.Repository.AccountRepository;
 import com.SDP.project.Repository.DepartmentRepository;
 import com.SDP.project.Repository.EmployeeRepository;
@@ -37,7 +38,7 @@ public class EmployeeServiceImpli implements EmployeeService {
     private PasswordEncoder passwordEncoder; // Inject PasswordEncoder
 
     @Transactional
-    public String saveEmployee(EmployeeDto employeeDto) {
+    public EmployeeRegistrationResponseDto saveEmployee(EmployeeDto employeeDto) {
         try {
             log.info("in save employee method");
 
@@ -68,7 +69,7 @@ public class EmployeeServiceImpli implements EmployeeService {
             employeeRepository.save(employee);
 
             log.info("Successfully registered employee with username '{}'", username);
-            return "Registered an employee successfully";
+            return new EmployeeRegistrationResponseDto(true, "Successfully registered an employee.");
 
         } catch (RecordAlreadyExistException e) {
             log.error("RecordAlreadyExistException: {}", e.getMessage());
