@@ -2,6 +2,7 @@ package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.*;
 import com.SDP.project.DTOs.response.OrderResponseDto;
+import com.SDP.project.DTOs.response.SchoolOrderResponseDto;
 import com.SDP.project.Repository.OrderItemRepository;
 import com.SDP.project.services.OrderService;
 import com.SDP.project.services.PaperSetService;
@@ -55,7 +56,7 @@ public class OrdersController {
     }
 
     @DeleteMapping("/{orderId}")
-    @PreAuthorize("hasAnyRole('ROLE_EMPLOYEE', 'ROLE_ADMIN')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_SCHOOL')")
     public ResponseEntity<Void> deleteOrder(@PathVariable String orderId) {
         orderService.deleteOrder(orderId);
         return ResponseEntity.noContent().build();
@@ -72,5 +73,12 @@ public class OrdersController {
     public ResponseEntity<List<MonthlyOrdersDataDto>> getMonthlyOrders() {
         List<MonthlyOrdersDataDto> data = orderService.getMonthlyProcessedOrders();
         return ResponseEntity.ok(data);
+    }
+
+    @GetMapping("/school/{schoolId}")
+    @PreAuthorize("hasAnyRole('ROLE_SCHOOL')")
+    public ResponseEntity<List<SchoolOrderResponseDto>> getOrdersBySchool(@PathVariable int schoolId) {
+        List<SchoolOrderResponseDto> orders = orderService.getOrdersBySchool(schoolId);
+        return ResponseEntity.ok(orders);
     }
 }

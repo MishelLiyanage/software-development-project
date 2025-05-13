@@ -35,4 +35,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
             "GROUP BY MONTH(o.date), MONTHNAME(o.date) " +
             "ORDER BY MONTH(o.date)", nativeQuery = true)
     List<Object[]> findMonthlyOrders();
+
+    List<Order> findAllBySchoolId(int schoolId);
 }
