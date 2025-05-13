@@ -3,6 +3,7 @@ package com.SDP.project.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -23,7 +24,7 @@ public class Order {
 
     private String status;
 
-    private Date date;
+    private LocalDate date;
 
     private LocalTime time;
 

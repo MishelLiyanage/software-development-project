@@ -2,12 +2,9 @@ package com.SDP.project.services.impli;
 
 import com.SDP.project.DTOs.*;
 import com.SDP.project.DTOs.response.OrderResponseDto;
-import com.SDP.project.Repository.OrderItemRepository;
-import com.SDP.project.Repository.OrderRepository;
-import com.SDP.project.Repository.PaymentRepository;
-import com.SDP.project.models.Order;
-import com.SDP.project.models.OrderItem;
-import com.SDP.project.models.Payment;
+import com.SDP.project.DTOs.response.SchoolOrderResponseDto;
+import com.SDP.project.Repository.*;
+import com.SDP.project.models.*;
 import com.SDP.project.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +16,7 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,6 +38,10 @@ public class OrderServiceImpl implements OrderService {
     private PaymentRepository paymentRepository;
     @Autowired
     private OrderItemRepository orderItemRepository;
+    @Autowired
+    private ModelPaperRepository modelPaperRepository;
+    @Autowired
+    private PapersetRepository papersetRepository;
 
     @Override
     @Transactional
@@ -48,7 +50,8 @@ public class OrderServiceImpl implements OrderService {
         order.setSchoolId(orderRequestDTO.getSchoolId());
         order.setStatus(orderRequestDTO.getStatus() != null ? orderRequestDTO.getStatus() : "Order Completed");
         order.setNotes(orderRequestDTO.getNotes());
-        order.setDate(new Date());
+        order.setOrderStatus("Pending");
+        order.setDate(LocalDate.now());
         order.setTime(LocalTime.now());
 
         // Generate custom order ID
@@ -238,5 +241,38 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return dataList;
+    }
+
+    @Override
+    @Transactional
+    public List<SchoolOrderResponseDto> getOrdersBySchool(int schoolId) {
+        List<Order> orders = orderRepository.findAllBySchoolId(schoolId);
+
+        return orders.stream().map(order -> {
+            List<String> itemDescriptions = new ArrayList<>();
+
+            for (OrderItem item : order.getOrderItems()) {
+                PaperSets paper = papersetRepository.findById(item.getPaperSetId()).orElse(null);
+                if (paper != null) {
+                    String name = paper.getGrade() + " " +
+                            paper.getCategory() +
+                            " x " + item.getQuantity();
+                    itemDescriptions.add(name);
+                }
+            }
+
+            Payment payment = paymentRepository.findByOrderId(order.getId()).orElse(null);
+            String paymentStatus = (payment != null) ? payment.getStatus() : "Not Paid";
+            double amount = (payment != null) ? payment.getAmount() : 0.0;
+
+            return new SchoolOrderResponseDto(
+                    order.getId(),
+                    itemDescriptions,
+                    order.getDate().toString(),
+                    paymentStatus,
+                    order.getOrderStatus(),
+                    amount
+            );
+        }).collect(Collectors.toList());
     }
 }

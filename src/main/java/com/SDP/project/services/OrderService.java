@@ -2,6 +2,7 @@ package com.SDP.project.services;
 
 import com.SDP.project.DTOs.*;
 import com.SDP.project.DTOs.response.OrderResponseDto;
+import com.SDP.project.DTOs.response.SchoolOrderResponseDto;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -13,4 +14,5 @@ public interface OrderService {
     void deleteOrder(String orderId);
     List<OrderCategoryData> getOrderDistribution();
     List<MonthlyOrdersDataDto> getMonthlyProcessedOrders();
+    List<SchoolOrderResponseDto> getOrdersBySchool(int schoolId);
 }
