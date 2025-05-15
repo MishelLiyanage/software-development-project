@@ -3,6 +3,7 @@ package com.SDP.project.controllers;
 import com.SDP.project.DTOs.ManageSchoolsDto;
 import com.SDP.project.DTOs.SchoolDto;
 import com.SDP.project.DTOs.UpdateSchoolDto;
+import com.SDP.project.DTOs.UpdateSchoolProfileDto;
 import com.SDP.project.models.School;
 import com.SDP.project.services.SchoolService;
 import jakarta.validation.Valid;
@@ -34,7 +35,7 @@ public class SchoolController {
 
     @PutMapping("/update-profile")
     @PreAuthorize("hasRole('ROLE_SCHOOL')")
-    public ResponseEntity<Map<String, String>> updateSchoolProfile(@Valid @RequestBody SchoolDto schoolDto) {
+    public ResponseEntity<Map<String, String>> updateSchoolProfile(@Valid @RequestBody UpdateSchoolProfileDto schoolDto) {
         return schoolService.updateSchoolProfile(schoolDto);
     }
 

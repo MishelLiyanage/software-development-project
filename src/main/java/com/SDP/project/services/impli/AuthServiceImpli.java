@@ -94,10 +94,10 @@ public class AuthServiceImpli implements AuthService {
             return Optional.of(new SchoolResponseDto(
                     account.getId(),
                     account.getUsername(),
-                    account.getPassword(),
                     account.getRole(),
                     sch.getName(),
                     sch.getAddress(),
+                    sch.getCity(),
                     sch.getContactNo(),
                     sch.getEmail(),
                     sch.getPrincipleName(),
