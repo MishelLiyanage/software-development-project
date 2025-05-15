@@ -12,18 +12,19 @@ public class SchoolResponseDto {
     private String role;
     private String name;
     private String address;
+    private String city;
     private String contactNo;
     private String email;
     private String principleName;
     private String principleSignature;
 
-    public SchoolResponseDto(int id, String username, String password, String role, String name, String address, String contactNo, String email, String principleName, String principleSignature) {
+    public SchoolResponseDto(int id, String username, String role, String name, String address, String city, String contactNo, String email, String principleName, String principleSignature) {
         this.id = id;
         this.username = username;
-        this.password = password;
         this.role = role;
         this.name = name;
         this.address = address;
+        this.city = city;
         this.contactNo = contactNo;
         this.email = email;
         this.principleName = principleName;
