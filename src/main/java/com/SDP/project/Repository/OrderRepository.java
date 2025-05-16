@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface OrderRepository extends JpaRepository<Order, Integer> {
     Order findTopByOrderByIdDesc();
 
-    @Query("SELECT o.id AS orderId, s.name AS schoolName, s.city, p.status, p.paymentMethod, p.date, p.time, p.amount\n" +
+    @Query("SELECT o.id AS orderId, s.name AS schoolName, s.city, p.status, p.paymentMethod, o.orderStatus, p.date, p.time, p.amount\n" +
             "FROM Order o\n" +
             "INNER JOIN School s ON o.schoolId = s.id\n" +
             "LEFT JOIN Payment p ON o.id = p.orderId")

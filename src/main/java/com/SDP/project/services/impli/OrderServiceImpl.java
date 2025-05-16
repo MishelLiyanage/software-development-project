@@ -148,24 +148,25 @@ public class OrderServiceImpl implements OrderService {
         dto.setCity((String) result[2]);
         dto.setPaymentStatus(result[3] != null ? (String) result[3] : "");
         dto.setPaymentMethod(result[4] != null ? (String) result[4] : "");
+        dto.setOrderStatus(result[5] != null ? (String) result[5] : "");
 
         // Parse date (expected format: "yyyy-MM-dd")
-        if (result[5] instanceof java.sql.Date) {
-            dto.setDate(new java.util.Date(((java.sql.Date) result[5]).getTime()));
+        if (result[6] instanceof java.sql.Date) {
+            dto.setDate(new java.util.Date(((java.sql.Date) result[6]).getTime()));
         } else {
             dto.setDate(null);
         }
 
         // result[6] is java.sql.Time or java.time.LocalTime
-        if (result[6] instanceof java.sql.Time) {
-            dto.setTime(((java.sql.Time) result[6]).toLocalTime());
-        } else if (result[6] instanceof LocalTime) {
-            dto.setTime((LocalTime) result[6]);
+        if (result[7] instanceof java.sql.Time) {
+            dto.setTime(((java.sql.Time) result[7]).toLocalTime());
+        } else if (result[7] instanceof LocalTime) {
+            dto.setTime((LocalTime) result[7]);
         } else {
             dto.setTime(null);
         }
 
-        dto.setAmount(result[7] != null ? result[7].toString() : "");
+        dto.setAmount(result[8] != null ? result[8].toString() : "");
         return dto;
     }
 
