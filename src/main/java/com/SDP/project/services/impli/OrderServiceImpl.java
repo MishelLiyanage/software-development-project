@@ -19,6 +19,7 @@ import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -246,6 +247,9 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public List<SchoolOrderResponseDto> getOrdersBySchool(int schoolId) {
         List<Order> orders = orderRepository.findAllBySchoolId(schoolId);
+
+        // Reverse the order list to get the most recent orders first
+        Collections.reverse(orders);
 
         return orders.stream().map(order -> {
             List<String> itemDescriptions = new ArrayList<>();
