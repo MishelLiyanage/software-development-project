@@ -1,6 +1,7 @@
 package com.SDP.project.services.impli;
 
 import com.SDP.project.DTOs.PaperNumberingDto;
+import com.SDP.project.DTOs.response.NumberingCounterDetails;
 import com.SDP.project.Repository.PaperNumberingRepository;
 import com.SDP.project.models.PaperNumbering;
 import com.SDP.project.services.PaperNumberingService;
@@ -33,5 +34,13 @@ public class PaperNumberingServiceImpl implements PaperNumberingService {
         }
 
         return paperNumberingRepository.save(paperNumbering); // This handles both insert and update
+    }
+
+    @Override
+    public NumberingCounterDetails getCounterNumber(String grade, String category) {
+        PaperNumbering numbering = paperNumberingRepository.findByGradeAndCategory(grade, category)
+                .orElseThrow(() -> new RuntimeException("No paper numbering found for given grade and category"));
+
+        return new NumberingCounterDetails(numbering.getCounterNumber() + 1);
     }
 }
