@@ -197,22 +197,23 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void deleteOrder(String orderId) {
-        Order order = orderRepository.findOrderById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));
-        orderRepository.delete(order);
+//        Order order = orderRepository.findOrderById(orderId)
+//                .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));
+//        orderRepository.delete(order);
+//
+//        List<OrderItem> orderItems = orderItemRepository.getOrderItemsByOrderId(orderId);
+//
+//        if (!orderItems.isEmpty()) {
+//            orderItemRepository.deleteAll(orderItems);
+//            System.out.println("Deleted " + orderItems.size() + " order items for orderId: " + orderId);
+//        } else {
+//            System.out.println("No order items found for orderId: " + orderId);
+//        }
+//
+//        Payment payment = paymentRepository.findByOrderId(orderId)
+//                .orElseThrow(() -> new RuntimeException("Payment not found with ID: " + orderId));
+//        paymentRepository.delete(payment);
 
-        List<OrderItem> orderItems = orderItemRepository.getOrderItemsByOrderId(orderId);
-
-        if (!orderItems.isEmpty()) {
-            orderItemRepository.deleteAll(orderItems);
-            System.out.println("Deleted " + orderItems.size() + " order items for orderId: " + orderId);
-        } else {
-            System.out.println("No order items found for orderId: " + orderId);
-        }
-
-        Payment payment = paymentRepository.findByOrderId(orderId)
-                .orElseThrow(() -> new RuntimeException("Payment not found with ID: " + orderId));
-        paymentRepository.delete(payment);
     }
 
     @Override

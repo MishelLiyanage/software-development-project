@@ -28,12 +28,14 @@ public class PaymentController {
     }
 
     @GetMapping("/monthly-revenue")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     public ResponseEntity<List<MonthlyRevenue>> getMonthlyRevenue() {
         List<MonthlyRevenue> data = paymentService.getMonthlyRevenue();
         return ResponseEntity.ok(data);
     }
 
     @GetMapping("/revenue")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
     public ResponseEntity<List<PaymentRevenueDto>> getRevenueByMethod() {
         return ResponseEntity.ok(paymentService.getRevenueByMethod());
     }
