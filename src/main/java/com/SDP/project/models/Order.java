@@ -31,6 +31,8 @@ public class Order {
 
     private String orderStatus;
 
+    private boolean isDeleted;
+
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();
 }

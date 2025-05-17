@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Integer> {
+public interface OrderRepository extends JpaRepository<Order, String> {
     Order findTopByOrderByIdDesc();
 
     @Query("SELECT o.id AS orderId, s.name AS schoolName, s.city, p.status, p.paymentMethod, o.orderStatus, p.date, p.time, p.amount\n" +
@@ -37,4 +37,10 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
     List<Object[]> findMonthlyOrders();
 
     List<Order> findAllBySchoolId(int schoolId);
+
+    @Query("SELECT DISTINCT o.id FROM Order o " +
+            "JOIN OrderItem oi ON o.id = oi.order.id " +
+            "JOIN PaperSets p ON oi.paperSetId = p.id " +
+            "WHERE o.orderStatus = 'Pending' AND p.grade = 'Grade 5' AND p.category = 'Scholarship Tamil'")
+    List<String> findPendingOrderIdsWithScholarshipTamil();
 }
