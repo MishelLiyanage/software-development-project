@@ -41,6 +41,14 @@ public interface OrderRepository extends JpaRepository<Order, String> {
     @Query("SELECT DISTINCT o.id FROM Order o " +
             "JOIN OrderItem oi ON o.id = oi.order.id " +
             "JOIN PaperSets p ON oi.paperSetId = p.id " +
-            "WHERE o.orderStatus = 'Pending' AND p.grade = 'Grade 5' AND p.category = 'Scholarship Tamil'")
+            "WHERE oi.orderStatus = 'Pending' AND p.grade = 'Grade 5' AND p.category = 'Scholarship Tamil'")
     List<String> findPendingOrderIdsWithScholarshipTamil();
+
+    @Query("SELECT DISTINCT o.id FROM Order o " +
+            "JOIN OrderItem oi ON o.id = oi.order.id " +
+            "JOIN PaperSets p ON oi.paperSetId = p.id " +
+            "WHERE oi.orderStatus = 'Pending' AND p.grade = 'Grade 3' AND p.category = 'Scholarship Tamil'")
+    List<String> findPendingOrderIdsWithGrade3ScholarshipTamil();
+
+    List<Order> findByIdIn(List<String> ids);
 }

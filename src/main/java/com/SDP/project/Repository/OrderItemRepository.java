@@ -7,6 +7,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface OrderItemRepository extends JpaRepository<OrderItem, Integer> {
@@ -28,4 +29,5 @@ public interface OrderItemRepository extends JpaRepository<OrderItem, Integer> {
             "GROUP BY p.grade, p.category")
     List<Object[]> getRawOrderDistribution(@Param("keyword") String keyword);
 
+    Optional<OrderItem> findByOrderIdAndPaperSetId(String orderId, int paperSetId);
 }

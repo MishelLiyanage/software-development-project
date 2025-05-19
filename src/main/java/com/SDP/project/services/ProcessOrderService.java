@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface ProcessOrderService {
     List<String> getScholarshipTamilPendingOrderIds();
+    List<String> getGrade3ScholarshipTamilPendingOrderIds();
     ResponseEntity<ProcessOrderDetailsDto> getOrderDetails(String orderId);
 }

@@ -21,6 +21,8 @@ public class OrderItem {
 
     private Integer quantity;
 
+    private String orderStatus;
+
     @ManyToOne
     @JoinColumn(name = "order_id")
     private Order order;

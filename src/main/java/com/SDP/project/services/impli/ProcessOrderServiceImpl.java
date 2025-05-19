@@ -32,6 +32,11 @@ public class ProcessOrderServiceImpl implements ProcessOrderService {
     }
 
     @Override
+    public List<String> getGrade3ScholarshipTamilPendingOrderIds() {
+        return orderRepository.findPendingOrderIdsWithGrade3ScholarshipTamil();
+    }
+
+    @Override
     @Transactional
     public ResponseEntity<ProcessOrderDetailsDto> getOrderDetails(String orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow();
