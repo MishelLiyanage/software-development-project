@@ -30,6 +30,8 @@ public class ProcessedOrderServiceImpl implements ProcessedOrderService {
     private OrderItemRepository orderItemRepository;
     @Autowired
     private PapersetRepository paperSetRepository;
+    @Autowired
+    private EmailServiceImpl emailService;
 
     @Transactional
     public void saveProcessedOrder(ProcessedOrderRequest request) {
@@ -97,5 +99,14 @@ public class ProcessedOrderServiceImpl implements ProcessedOrderService {
 
         // Save the processed order (cascade saves counters)
         processedOrderRepository.save(processedOrder);
+
+        // Send email notification to school after successful order processing
+        try {
+            emailService.sendOrderProcessedNotification(processedOrder, school, order, paperSet);
+        } catch (Exception e) {
+            // Log error but don't roll back the transaction
+            System.err.println("Failed to send email notification: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }
