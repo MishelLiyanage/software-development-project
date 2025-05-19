@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Order Processed</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #4285f4;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-radius: 0 0 5px 5px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 12px;
+            color: #777;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>Order Processed Successfully</h1>
+</div>
+
+<div class="content">
+    <p>Dear <span th:text="${schoolName}">School Name</span>,</p>
+
+    <p>We are pleased to inform you that your order has been processed successfully.</p>
+
+    <h3>Order Details:</h3>
+    <table>
+        <tr>
+            <th>Order ID</th>
+            <td th:text="${orderId}">12345</td>
+        </tr>
+        <tr>
+            <th>Paper Grade</th>
+            <td th:text="${paperGrade}">Grade 5</td>
+        </tr>
+        <tr>
+            <th>Paper Category</th>
+            <td th:text="${paperCategory}">Mathematics</td>
+        </tr>
+        <tr>
+            <th>Quantity Processed</th>
+            <td th:text="${processedQuantity}">100</td>
+        </tr>
+        <tr>
+            <th>Date Processed</th>
+            <td th:text="${dateProcessed}">2025-05-20</td>
+        </tr>
+        <tr>
+            <th>Paper Numbers</th>
+            <td th:text="${fromPaperNo} + ' to ' + ${toPaperNo}">001 to 100</td>
+        </tr>
+        <tr>
+            <th>Sequence Number</th>
+            <td th:text="${sequenceNo}">A12345</td>
+        </tr>
+    </table>
+
+    <p>If you have any questions regarding your order, please contact our support team.</p>
+
+    <p>Thank you for your business!</p>
+
+    <p>Best regards,<br>
+        The Team at <span th:text="${appName}">Paper Order System</span></p>
+</div>
+
+<div class="footer">
+    <p>This is an automated email. Please do not reply to this message.</p>
+    <p>&copy; 2025 <span th:text="${appName}">Paper Order System</span>. All rights reserved.</p>
+</div>
+</body>
+</html>

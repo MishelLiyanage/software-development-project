@@ -51,6 +51,11 @@ dependencies {
 	// paypal dependency
 	implementation 'com.paypal.sdk:checkout-sdk:1.0.3'
 
+	// Spring Boot Mail Starter for email functionality
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	// Thymeleaf for email templates
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+
 }
 
 tasks.named('test') {
