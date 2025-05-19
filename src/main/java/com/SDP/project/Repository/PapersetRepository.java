@@ -14,4 +14,6 @@ public interface PapersetRepository extends JpaRepository<PaperSets, Integer> {
 
     @Query("SELECT p.id FROM PaperSets p WHERE p.grade = :grade AND p.category = :category")
     int findPaperSetIdByPublicationName(@Param("grade") String grade, @Param("category") String category);
+
+
 }

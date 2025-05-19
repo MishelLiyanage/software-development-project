@@ -3,10 +3,7 @@ package com.SDP.project.services.impli;
 import com.SDP.project.DTOs.ProcessedOrderDTO;
 import com.SDP.project.DTOs.ProcessedOrderRequest;
 import com.SDP.project.DTOs.ProcessedOrderSchoolDTO;
-import com.SDP.project.Repository.OrderRepository;
-import com.SDP.project.Repository.PaperNumberingRepository;
-import com.SDP.project.Repository.ProcessedOrderRepository;
-import com.SDP.project.Repository.SchoolRepository;
+import com.SDP.project.Repository.*;
 import com.SDP.project.models.*;
 import com.SDP.project.services.ProcessedOrderService;
 import jakarta.transaction.Transactional;
@@ -29,18 +26,27 @@ public class ProcessedOrderServiceImpl implements ProcessedOrderService {
     private SchoolRepository schoolRepository;
     @Autowired
     private PaperNumberingRepository paperNumberingRepository;
+    @Autowired
+    private OrderItemRepository orderItemRepository;
+    @Autowired
+    private PapersetRepository paperSetRepository;
 
     @Transactional
     public void saveProcessedOrder(ProcessedOrderRequest request) {
         ProcessedOrderDTO orderDTO = request.getOrder();
         ProcessedOrderSchoolDTO schoolDTO = request.getSchool();
 
-        Order order = orderRepository.findOrderById(orderDTO.getOrderId())
+        PaperSets paperSet = paperSetRepository.findByGradeAndCategory(orderDTO.getGrade(), orderDTO.getCategory());
+
+        OrderItem orderItem = orderItemRepository.findByOrderIdAndPaperSetId(orderDTO.getOrderId(), paperSet.getId())
                 .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderDTO.getOrderId()));
 
-        order.setOrderStatus("Processed");
+        orderItem.setOrderStatus("Processed");
 
-        orderRepository.save(order);
+        orderItemRepository.save(orderItem);
+
+        Order order = orderRepository.findOrderById(orderDTO.getOrderId())
+                .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderDTO.getOrderId()));
 
         int schoolId = order.getSchoolId();
 

@@ -61,7 +61,8 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderedItems = orderRequestDTO.getOrderedPublications();
 
         for (OrderItem item : orderedItems) {
-            item.setOrder(order); // set the parent order for each item
+            item.setOrder(order);
+            item.setOrderStatus("Pending");
         }
         order.setOrderItems(orderedItems);
 

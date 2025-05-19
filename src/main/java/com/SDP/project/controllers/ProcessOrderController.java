@@ -21,6 +21,13 @@ public class ProcessOrderController {
     @Autowired
     private ProcessedOrderService processedOrderService;
 
+    @GetMapping("/pending-grade3-scholarship-tamil")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+    public ResponseEntity<List<String>> getPendingGrade3ScholarshipTamilOrders() {
+        List<String> orderIds = processOrderService.getGrade3ScholarshipTamilPendingOrderIds();
+        return ResponseEntity.ok(orderIds);
+    }
+
     @GetMapping("/pending-scholarship-tamil")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
     public ResponseEntity<List<String>> getPendingScholarshipTamilOrders() {
