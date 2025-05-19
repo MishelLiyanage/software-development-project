@@ -1,7 +1,6 @@
 package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.OrderDetailDto;
-import com.SDP.project.services.OrderService;
 import com.SDP.project.services.ParcelOrderListService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
