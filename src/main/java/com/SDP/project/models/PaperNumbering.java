@@ -23,4 +23,6 @@ public class PaperNumbering {
 
     private String category;
 
+    private String sequenceNo;
+
 }

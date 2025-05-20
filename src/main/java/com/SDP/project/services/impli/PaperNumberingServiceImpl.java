@@ -15,15 +15,16 @@ public class PaperNumberingServiceImpl implements PaperNumberingService {
 
     @Override
     public PaperNumbering saveInitialCounter(PaperNumberingDto paperNumberingDto) {
-        boolean isExists = paperNumberingRepository.existsPaperNumberingByGradeAndCategory(
-                paperNumberingDto.getGrade(), paperNumberingDto.getCategory()
+        System.out.println(paperNumberingDto.getSequenceNo() + "666666666666666666666666666666666666666666666666666");
+        boolean isExists = paperNumberingRepository.existsPaperNumberingByGradeAndCategoryAndSequenceNo(
+                paperNumberingDto.getGrade(), paperNumberingDto.getCategory(), paperNumberingDto.getSequenceNo()
         );
 
         PaperNumbering paperNumbering;
 
         if (isExists) {
-            paperNumbering = paperNumberingRepository.getPaperNumberingByGradeAndCategory(
-                    paperNumberingDto.getGrade(), paperNumberingDto.getCategory()
+            paperNumbering = paperNumberingRepository.getPaperNumberingByGradeAndCategoryAndSequenceNo(
+                    paperNumberingDto.getGrade(), paperNumberingDto.getCategory(), paperNumberingDto.getSequenceNo()
             );
             paperNumbering.setCounterNumber(paperNumberingDto.getCounterNumber());
         } else {
@@ -31,6 +32,7 @@ public class PaperNumberingServiceImpl implements PaperNumberingService {
             paperNumbering.setGrade(paperNumberingDto.getGrade());
             paperNumbering.setCategory(paperNumberingDto.getCategory());
             paperNumbering.setCounterNumber(paperNumberingDto.getCounterNumber());
+            paperNumbering.setSequenceNo(paperNumberingDto.getSequenceNo());
         }
 
         return paperNumberingRepository.save(paperNumbering); // This handles both insert and update
