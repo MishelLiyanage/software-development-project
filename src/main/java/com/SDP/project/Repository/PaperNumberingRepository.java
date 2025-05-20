@@ -6,9 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
 public interface PaperNumberingRepository extends JpaRepository<PaperNumbering, Integer> {
-    boolean existsPaperNumberingByGradeAndCategory(String grade, String category);
+    boolean existsPaperNumberingByGradeAndCategoryAndSequenceNo(String grade, String category, String sequenceNo);
 
-    PaperNumbering getPaperNumberingByGradeAndCategory(String grade, String category);
+    PaperNumbering getPaperNumberingByGradeAndCategoryAndSequenceNo(String grade, String category, String sequenceNo);
 
     Optional<PaperNumbering> findByGradeAndCategory(String grade, String category);
 }
