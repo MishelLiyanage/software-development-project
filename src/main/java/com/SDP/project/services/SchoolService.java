@@ -3,6 +3,7 @@ package com.SDP.project.services;
 import com.SDP.project.DTOs.ManageSchoolsDto;
 import com.SDP.project.DTOs.SchoolDto;
 import com.SDP.project.DTOs.UpdateSchoolDto;
+import com.SDP.project.DTOs.UpdateSchoolProfileDto;
 import com.SDP.project.models.School;
 import org.springframework.http.ResponseEntity;
 
@@ -12,7 +13,7 @@ import java.util.Map;
 public interface SchoolService {
     String saveSchool(SchoolDto schoolDto);
 
-    ResponseEntity<Map<String, String>> updateSchoolProfile(SchoolDto schoolDto);
+    ResponseEntity<Map<String, String>> updateSchoolProfile(UpdateSchoolProfileDto schoolDto);
 
     List<ManageSchoolsDto> getAllSchools();
 

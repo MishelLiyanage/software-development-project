@@ -2,12 +2,9 @@ package com.SDP.project.services.impli;
 
 import com.SDP.project.DTOs.*;
 import com.SDP.project.DTOs.response.OrderResponseDto;
-import com.SDP.project.Repository.OrderItemRepository;
-import com.SDP.project.Repository.OrderRepository;
-import com.SDP.project.Repository.PaymentRepository;
-import com.SDP.project.models.Order;
-import com.SDP.project.models.OrderItem;
-import com.SDP.project.models.Payment;
+import com.SDP.project.DTOs.response.SchoolOrderResponseDto;
+import com.SDP.project.Repository.*;
+import com.SDP.project.models.*;
 import com.SDP.project.services.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,9 +16,10 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,6 +38,10 @@ public class OrderServiceImpl implements OrderService {
     private PaymentRepository paymentRepository;
     @Autowired
     private OrderItemRepository orderItemRepository;
+    @Autowired
+    private ModelPaperRepository modelPaperRepository;
+    @Autowired
+    private PapersetRepository papersetRepository;
 
     @Override
     @Transactional
@@ -48,7 +50,8 @@ public class OrderServiceImpl implements OrderService {
         order.setSchoolId(orderRequestDTO.getSchoolId());
         order.setStatus(orderRequestDTO.getStatus() != null ? orderRequestDTO.getStatus() : "Order Completed");
         order.setNotes(orderRequestDTO.getNotes());
-        order.setDate(new Date());
+        order.setOrderStatus("Pending");
+        order.setDate(LocalDate.now());
         order.setTime(LocalTime.now());
 
         // Generate custom order ID
@@ -58,7 +61,8 @@ public class OrderServiceImpl implements OrderService {
         List<OrderItem> orderedItems = orderRequestDTO.getOrderedPublications();
 
         for (OrderItem item : orderedItems) {
-            item.setOrder(order); // set the parent order for each item
+            item.setOrder(order);
+            item.setOrderStatus("Pending");
         }
         order.setOrderItems(orderedItems);
 
@@ -145,24 +149,25 @@ public class OrderServiceImpl implements OrderService {
         dto.setCity((String) result[2]);
         dto.setPaymentStatus(result[3] != null ? (String) result[3] : "");
         dto.setPaymentMethod(result[4] != null ? (String) result[4] : "");
+        dto.setOrderStatus(result[5] != null ? (String) result[5] : "");
 
         // Parse date (expected format: "yyyy-MM-dd")
-        if (result[5] instanceof java.sql.Date) {
-            dto.setDate(new java.util.Date(((java.sql.Date) result[5]).getTime()));
+        if (result[6] instanceof java.sql.Date) {
+            dto.setDate(new java.util.Date(((java.sql.Date) result[6]).getTime()));
         } else {
             dto.setDate(null);
         }
 
         // result[6] is java.sql.Time or java.time.LocalTime
-        if (result[6] instanceof java.sql.Time) {
-            dto.setTime(((java.sql.Time) result[6]).toLocalTime());
-        } else if (result[6] instanceof LocalTime) {
-            dto.setTime((LocalTime) result[6]);
+        if (result[7] instanceof java.sql.Time) {
+            dto.setTime(((java.sql.Time) result[7]).toLocalTime());
+        } else if (result[7] instanceof LocalTime) {
+            dto.setTime((LocalTime) result[7]);
         } else {
             dto.setTime(null);
         }
 
-        dto.setAmount(result[7] != null ? result[7].toString() : "");
+        dto.setAmount(result[8] != null ? result[8].toString() : "");
         return dto;
     }
 
@@ -193,22 +198,23 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public void deleteOrder(String orderId) {
-        Order order = orderRepository.findOrderById(orderId)
-                .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));
-        orderRepository.delete(order);
+//        Order order = orderRepository.findOrderById(orderId)
+//                .orElseThrow(() -> new RuntimeException("Order not found with ID: " + orderId));
+//        orderRepository.delete(order);
+//
+//        List<OrderItem> orderItems = orderItemRepository.getOrderItemsByOrderId(orderId);
+//
+//        if (!orderItems.isEmpty()) {
+//            orderItemRepository.deleteAll(orderItems);
+//            System.out.println("Deleted " + orderItems.size() + " order items for orderId: " + orderId);
+//        } else {
+//            System.out.println("No order items found for orderId: " + orderId);
+//        }
+//
+//        Payment payment = paymentRepository.findByOrderId(orderId)
+//                .orElseThrow(() -> new RuntimeException("Payment not found with ID: " + orderId));
+//        paymentRepository.delete(payment);
 
-        List<OrderItem> orderItems = orderItemRepository.getOrderItemsByOrderId(orderId);
-
-        if (!orderItems.isEmpty()) {
-            orderItemRepository.deleteAll(orderItems);
-            System.out.println("Deleted " + orderItems.size() + " order items for orderId: " + orderId);
-        } else {
-            System.out.println("No order items found for orderId: " + orderId);
-        }
-
-        Payment payment = paymentRepository.findByOrderId(orderId)
-                .orElseThrow(() -> new RuntimeException("Payment not found with ID: " + orderId));
-        paymentRepository.delete(payment);
     }
 
     @Override
@@ -238,5 +244,41 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return dataList;
+    }
+
+    @Override
+    @Transactional
+    public List<SchoolOrderResponseDto> getOrdersBySchool(int schoolId) {
+        List<Order> orders = orderRepository.findAllBySchoolId(schoolId);
+
+        // Reverse the order list to get the most recent orders first
+        Collections.reverse(orders);
+
+        return orders.stream().map(order -> {
+            List<String> itemDescriptions = new ArrayList<>();
+
+            for (OrderItem item : order.getOrderItems()) {
+                PaperSets paper = papersetRepository.findById(item.getPaperSetId()).orElse(null);
+                if (paper != null) {
+                    String name = paper.getGrade() + " " +
+                            paper.getCategory() +
+                            " x " + item.getQuantity();
+                    itemDescriptions.add(name);
+                }
+            }
+
+            Payment payment = paymentRepository.findByOrderId(order.getId()).orElse(null);
+            String paymentStatus = (payment != null) ? payment.getStatus() : "Not Paid";
+            double amount = (payment != null) ? payment.getAmount() : 0.0;
+
+            return new SchoolOrderResponseDto(
+                    order.getId(),
+                    itemDescriptions,
+                    order.getDate().toString(),
+                    paymentStatus,
+                    order.getOrderStatus(),
+                    amount
+            );
+        }).collect(Collectors.toList());
     }
 }

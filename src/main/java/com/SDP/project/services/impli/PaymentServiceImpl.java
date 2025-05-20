@@ -3,7 +3,9 @@ package com.SDP.project.services.impli;
 import com.SDP.project.DTOs.MonthlyRevenue;
 import com.SDP.project.DTOs.PaymentRequestDto;
 import com.SDP.project.DTOs.PaymentRevenueDto;
+import com.SDP.project.Repository.OrderRepository;
 import com.SDP.project.Repository.PaymentRepository;
+import com.SDP.project.models.Order;
 import com.SDP.project.models.Payment;
 import com.SDP.project.services.PaymentService;
 import jakarta.validation.Valid;
@@ -14,20 +16,33 @@ import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public Payment savePaymentDetails(@Valid PaymentRequestDto paymentRequestDto) {
+        // In your service method:
+        Order order = orderRepository.findById(paymentRequestDto.getOrderId())
+                .orElseThrow(() -> new RuntimeException("Order not found with ID: " + paymentRequestDto.getOrderId()));
+
         Payment payment = new Payment();
 
         payment.setSchoolId(paymentRequestDto.getSchoolId());
         payment.setOrderId(paymentRequestDto.getOrderId());
         payment.setAmount(paymentRequestDto.getAmount());
-        payment.setStatus("Paid");
+
+        if (Objects.equals(paymentRequestDto.getPaymentMethod(), "Online")) {
+            payment.setStatus("Paid");
+        } else if (Objects.equals(paymentRequestDto.getPaymentMethod(), "Cash")) {
+            payment.setStatus("Pending");
+        }
+
         payment.setDate(new Date());
         payment.setTime(LocalTime.now());
         payment.setPaymentMethod(paymentRequestDto.getPaymentMethod());

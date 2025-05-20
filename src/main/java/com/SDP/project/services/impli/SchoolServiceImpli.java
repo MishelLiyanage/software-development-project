@@ -3,6 +3,7 @@ package com.SDP.project.services.impli;
 import com.SDP.project.DTOs.ManageSchoolsDto;
 import com.SDP.project.DTOs.SchoolDto;
 import com.SDP.project.DTOs.UpdateSchoolDto;
+import com.SDP.project.DTOs.UpdateSchoolProfileDto;
 import com.SDP.project.Repository.*;
 import com.SDP.project.models.*;
 import com.SDP.project.services.SchoolService;
@@ -90,7 +91,7 @@ public class SchoolServiceImpli implements SchoolService {
     }
 
     @Transactional
-    public ResponseEntity<Map<String, String>> updateSchoolProfile(SchoolDto schoolDto) {
+    public ResponseEntity<Map<String, String>> updateSchoolProfile(UpdateSchoolProfileDto schoolDto) {
         try {
             log.info("In the SchoolServiceImpli updateSchoolProfile");
 
@@ -104,6 +105,7 @@ public class SchoolServiceImpli implements SchoolService {
             // Update school details
             school.setName(schoolDto.getName());
             school.setAddress(schoolDto.getAddress());
+            school.setCity(schoolDto.getCity());
             school.setContactNo(schoolDto.getContactNo());
             school.setEmail(schoolDto.getEmail());
             school.setPrincipleName(schoolDto.getPrincipleName());
@@ -116,10 +118,6 @@ public class SchoolServiceImpli implements SchoolService {
             }
 
             account.setUsername(schoolDto.getUsername());
-
-            if (schoolDto.getPassword() != null && !schoolDto.getPassword().isBlank()) {
-                account.setPassword(passwordEncoder.encode(schoolDto.getPassword()));
-            }
 
             accountRepository.save(account);
             schoolRepository.save(school);

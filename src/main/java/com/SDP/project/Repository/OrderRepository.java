@@ -10,10 +10,10 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface OrderRepository extends JpaRepository<Order, Integer> {
+public interface OrderRepository extends JpaRepository<Order, String> {
     Order findTopByOrderByIdDesc();
 
-    @Query("SELECT o.id AS orderId, s.name AS schoolName, s.city, p.status, p.paymentMethod, p.date, p.time, p.amount\n" +
+    @Query("SELECT o.id AS orderId, s.name AS schoolName, s.city, p.status, p.paymentMethod, o.orderStatus, p.date, p.time, p.amount\n" +
             "FROM Order o\n" +
             "INNER JOIN School s ON o.schoolId = s.id\n" +
             "LEFT JOIN Payment p ON o.id = p.orderId")
@@ -35,4 +35,20 @@ public interface OrderRepository extends JpaRepository<Order, Integer> {
             "GROUP BY MONTH(o.date), MONTHNAME(o.date) " +
             "ORDER BY MONTH(o.date)", nativeQuery = true)
     List<Object[]> findMonthlyOrders();
+
+    List<Order> findAllBySchoolId(int schoolId);
+
+    @Query("SELECT DISTINCT o.id FROM Order o " +
+            "JOIN OrderItem oi ON o.id = oi.order.id " +
+            "JOIN PaperSets p ON oi.paperSetId = p.id " +
+            "WHERE oi.orderStatus = 'Pending' AND p.grade = 'Grade 5' AND p.category = 'Scholarship Tamil'")
+    List<String> findPendingOrderIdsWithScholarshipTamil();
+
+    @Query("SELECT DISTINCT o.id FROM Order o " +
+            "JOIN OrderItem oi ON o.id = oi.order.id " +
+            "JOIN PaperSets p ON oi.paperSetId = p.id " +
+            "WHERE oi.orderStatus = 'Pending' AND p.grade = 'Grade 3' AND p.category = 'Scholarship Tamil'")
+    List<String> findPendingOrderIdsWithGrade3ScholarshipTamil();
+
+    List<Order> findByIdIn(List<String> ids);
 }

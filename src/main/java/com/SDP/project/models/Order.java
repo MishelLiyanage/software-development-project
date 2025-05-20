@@ -3,9 +3,9 @@ package com.SDP.project.models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -23,13 +23,15 @@ public class Order {
 
     private String status;
 
-    private Date date;
+    private LocalDate date;
 
     private LocalTime time;
 
     private String notes;
 
     private String orderStatus;
+
+    private boolean isDeleted;
 
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL)
     private List<OrderItem> orderItems = new ArrayList<>();

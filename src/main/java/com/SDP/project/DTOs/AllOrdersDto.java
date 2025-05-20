@@ -16,6 +16,7 @@ public class AllOrdersDto {
     private String city;
     private String paymentStatus;
     private String paymentMethod;
+    private String orderStatus;
     private Date date;
     private LocalTime time;
     private String amount;

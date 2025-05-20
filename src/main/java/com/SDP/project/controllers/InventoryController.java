@@ -2,6 +2,7 @@ package com.SDP.project.controllers;
 
 import com.SDP.project.DTOs.InventoryDto;
 import com.SDP.project.DTOs.InventoryItemsDto;
+import com.SDP.project.DTOs.ProcessOrderInventoryDto;
 import com.SDP.project.models.Inventory;
 import com.SDP.project.services.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,12 @@ public class InventoryController {
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
     public List<InventoryItemsDto> getInventoryLevels() {
         return inventoryService.getInventoryLevels();
+    }
+
+    @GetMapping("/all")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_EMPLOYEE')")
+    public ResponseEntity<List<ProcessOrderInventoryDto>> getAllInventory() {
+        List<ProcessOrderInventoryDto> inventories = inventoryService.getAllInventory();
+        return ResponseEntity.ok(inventories);
     }
 }
