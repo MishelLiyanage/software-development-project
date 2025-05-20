@@ -56,6 +56,10 @@ dependencies {
 	// Thymeleaf for email templates
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 
+
+	implementation 'com.cloudinary:cloudinary-http44:1.29.0'
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 }
 
 tasks.named('test') {
