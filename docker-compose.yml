@@ -1,0 +1,30 @@
+version: '3.3'
+
+services:
+  mysql-db-service:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: 'sdp'
+      MYSQL_ROOT_PASSWORD: '1234'
+    ports:
+      - '3307:3306'
+    expose:
+      - '3307'
+    volumes:
+      - my-db:/var/lib/mysql
+
+  sdp-backend-service:
+    image: mishelfdo/sdp-backend:v1
+    restart: always
+    ports:
+      - '8083:8083'
+    depends_on:
+      - mysql-db-service
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql-db-service:3306/sdp
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: 1234
+
+volumes:
+  my-db:
