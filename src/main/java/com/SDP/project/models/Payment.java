@@ -3,7 +3,6 @@ package com.SDP.project.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.Date;
 
