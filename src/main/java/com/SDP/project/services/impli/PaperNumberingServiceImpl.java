@@ -16,15 +16,15 @@ public class PaperNumberingServiceImpl implements PaperNumberingService {
     @Override
     public PaperNumbering saveInitialCounter(PaperNumberingDto paperNumberingDto) {
         System.out.println(paperNumberingDto.getSequenceNo() + "666666666666666666666666666666666666666666666666666");
-        boolean isExists = paperNumberingRepository.existsPaperNumberingByGradeAndCategoryAndSequenceNo(
-                paperNumberingDto.getGrade(), paperNumberingDto.getCategory(), paperNumberingDto.getSequenceNo()
+        boolean isExists = paperNumberingRepository.existsPaperNumberingByGradeAndCategory(
+                paperNumberingDto.getGrade(), paperNumberingDto.getCategory()
         );
 
         PaperNumbering paperNumbering;
 
         if (isExists) {
-            paperNumbering = paperNumberingRepository.getPaperNumberingByGradeAndCategoryAndSequenceNo(
-                    paperNumberingDto.getGrade(), paperNumberingDto.getCategory(), paperNumberingDto.getSequenceNo()
+            paperNumbering = paperNumberingRepository.getPaperNumberingByGradeAndCategory(
+                    paperNumberingDto.getGrade(), paperNumberingDto.getCategory()
             );
             paperNumbering.setCounterNumber(paperNumberingDto.getCounterNumber());
         } else {
