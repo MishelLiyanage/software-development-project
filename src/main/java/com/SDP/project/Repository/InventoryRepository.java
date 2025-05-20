@@ -9,4 +9,6 @@ import java.util.Optional;
 @Repository
 public interface InventoryRepository extends JpaRepository<Inventory, Integer> {
     Optional<Inventory> findByTaskId(int taskId);
+
+    Optional<Inventory> findByModelPaperId(int id);
 }
