@@ -3,7 +3,9 @@ package com.SDP.project.services.impli;
 import com.SDP.project.DTOs.MonthlyRevenue;
 import com.SDP.project.DTOs.PaymentRequestDto;
 import com.SDP.project.DTOs.PaymentRevenueDto;
+import com.SDP.project.Repository.OrderRepository;
 import com.SDP.project.Repository.PaymentRepository;
+import com.SDP.project.models.Order;
 import com.SDP.project.models.Payment;
 import com.SDP.project.services.PaymentService;
 import jakarta.validation.Valid;
@@ -19,9 +21,15 @@ import java.util.List;
 public class PaymentServiceImpl implements PaymentService {
     @Autowired
     private PaymentRepository paymentRepository;
+    @Autowired
+    private OrderRepository orderRepository;
 
     @Override
     public Payment savePaymentDetails(@Valid PaymentRequestDto paymentRequestDto) {
+        // In your service method:
+        Order order = orderRepository.findById(paymentRequestDto.getOrderId())
+                .orElseThrow(() -> new RuntimeException("Order not found with ID: " + paymentRequestDto.getOrderId()));
+
         Payment payment = new Payment();
 
         payment.setSchoolId(paymentRequestDto.getSchoolId());
