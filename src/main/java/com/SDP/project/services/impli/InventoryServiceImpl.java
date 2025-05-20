@@ -2,12 +2,14 @@ package com.SDP.project.services.impli;
 
 import com.SDP.project.DTOs.InventoryDto;
 import com.SDP.project.DTOs.InventoryItemsDto;
+import com.SDP.project.DTOs.ProcessOrderInventoryDto;
 import com.SDP.project.Repository.InventoryRepository;
 import com.SDP.project.Repository.ModelPaperRepository;
 import com.SDP.project.Repository.TaskRepository;
 import com.SDP.project.models.Inventory;
 import com.SDP.project.models.ModelPaper;
 import com.SDP.project.services.InventoryService;
+import io.swagger.models.Model;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -70,5 +72,30 @@ public class InventoryServiceImpl implements InventoryService {
 
             return new InventoryItemsDto(name, inv.getQuantity());
         }).collect(Collectors.toList());
+    }
+
+    public List<ProcessOrderInventoryDto> getAllInventory() {
+        List<Inventory> inventories = inventoryRepository.findAll();
+        return convertToDTOList(inventories);
+    }
+
+    private List<ProcessOrderInventoryDto> convertToDTOList(List<Inventory> inventories) {
+        return inventories.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private ProcessOrderInventoryDto convertToDTO(Inventory inventory) {
+        int modelPaperId = inventory.getModelPaperId();
+
+        Optional<ModelPaper> modelPaper = modelPaperRepository.findById(modelPaperId);
+        return new ProcessOrderInventoryDto(
+                modelPaper.get().getId(),
+                modelPaper.get().getGrade(),
+                modelPaper.get().getCategory(),
+                modelPaper.get().getPaperNo(),
+                modelPaper.get().getPartNo(),
+                inventory.getQuantity()
+        );
     }
 }
