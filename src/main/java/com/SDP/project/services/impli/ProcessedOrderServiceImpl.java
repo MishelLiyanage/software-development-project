@@ -121,7 +121,7 @@ public class ProcessedOrderServiceImpl implements ProcessedOrderService {
                 }
             }
 
-            PaperNumbering existing = paperNumberingRepository.getPaperNumberingByGradeAndCategoryAndSequenceNo(orderDTO.getGrade(), orderDTO.getCategory(), orderDTO.getSequenceNo());
+            PaperNumbering existing = paperNumberingRepository.getPaperNumberingByGradeAndCategory(orderDTO.getGrade(), orderDTO.getCategory());
             existing.setCounterNumber(orderDTO.getLastCounterNumber());
             existing.setGrade(orderDTO.getGrade());
             existing.setCategory(orderDTO.getCategory());
